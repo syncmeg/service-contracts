@@ -3564,16 +3564,17 @@ function renderTable() {
         }
         
         static extractRowData(row) {
-          const val = (selector) => row.querySelector(selector)?.value?.trim() || '';
+          const val = (name) => row.querySelector(`[name="${name}"]`)?.value?.trim() || '';
+
           return {
-            firstName: row.querySelector('[name="firstname"]')?.value || '',
-            lastName: row.querySelector('[name="lastname"]')?.value || '',
-            middleName: row.querySelector('[name="middlename"]')?.value || '',
-            suffix: row.querySelector('[name="suffix"]')?.value || '',
-            gender: row.querySelector('[name="gender"]')?.value || '',
-            position: row.querySelector('[name="position"]')?.value || '',
-            salary: row.querySelector('[name="salary"]')?.value || '',
-            email: row.querySelector('[name="email"]')?.value || ''
+            firstName:  val('firstname'),
+            lastName:   val('lastname'),
+            middleName: val('middlename'),
+            suffix:     val('suffix'),
+            gender:     val('gender'),
+            position:   val('position'),
+            salary:     val('salary'),
+            email:      val('email')
           };
         }
         
