@@ -354,7 +354,7 @@ function submitData(payload) {
 
       // Type Enforcement
       if (rules.type === 'number') {
-        value = parseFloat(value);
+        value = Number.parseFloat(value);
         if (isNaN(value)) throw new Error(`Field ${key} must be a number.`);
         if (rules.min !== undefined && value < rules.min) throw new Error(`${key} below minimum.`);
       } else if (rules.type === 'string') {
@@ -435,8 +435,8 @@ function updateRecord(rowIndex, updatedRow) {
         return cell ? String(cell).trim() : '';
       }
 
-      // Optional: Add parseFloat logic for specific numeric columns here
-      // Example: if (index === 5) return parseFloat(cell) || 0;
+      // Optional: Add Number.parseFloat logic for specific numeric columns here
+      // Example: if (index === 5) return Number.parseFloat(cell) || 0;
 
       return cell;
     });
@@ -495,7 +495,7 @@ function updateRecordById(recordId, updatedRow) {
     
     const safeSalary = (val) => {
       if (val === undefined || val === null || val === '') return currentRow[7];
-      const parsed = parseFloat(val);
+      const parsed = Number.parseFloat(val);
       return isNaN(parsed) ? currentRow[7] : parsed;
     };
 

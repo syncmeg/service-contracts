@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Contracts Dashboard - PSA Sorsogon</title>
     <link 
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" 
       rel="stylesheet" 
@@ -140,11 +141,11 @@
                     </p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                    <button onclick="loadFormDataAndOpenModal()" class="btn-primary text-white px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all">
+                    <button onclick="loadFormDataAndOpenModal()" class="btn-primary text-white px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all" aria-label="Add new record" type="button">
                         <i class="fas fa-plus-circle"></i>
                         <span>Add New Record</span>
                     </button>
-                    <button onclick="loadTableDataTest()" class="glass-effect border border-white/20 hover:bg-white/90 hover:text-blue-700 hover:border-blue-300 hover:shadow-lg hover:scale-105 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                    <button onclick="loadTableDataTest()" class="glass-effect border border-white/20 hover:bg-white/90 hover:text-blue-700 hover:border-blue-300 hover:shadow-lg hover:scale-105 text-gray-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2" aria-label="View all records" type="button">
                         <i class="fas fa-database"></i>
                         <span>View All Records</span>
                     </button>
@@ -164,17 +165,17 @@
                     <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                         <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200">
                             <i class="fas fa-calendar-day text-gray-400 text-sm"></i>
-                            <input type="date" id="dateFrom" placeholder="From" class="text-sm outline-none bg-transparent" onchange="handleDateChange()">
+                            <input type="date" id="dateFrom" placeholder="From" class="text-sm outline-none bg-transparent" onchange="handleDateChange()" aria-label="Date from filter">
                         </div>
                         <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200">
                             <i class="fas fa-calendar-check text-gray-400 text-sm"></i>
-                            <input type="date" id="dateTo" placeholder="To" class="text-sm outline-none bg-transparent" onchange="handleDateChange()">
+                            <input type="date" id="dateTo" placeholder="To" class="text-sm outline-none bg-transparent" onchange="handleDateChange()" aria-label="Date to filter">
                         </div>
-                        <button onclick="resetDateRangeFilter()" class="glass-effect border border-white/20 hover:bg-white/90 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 text-sm">
+                        <button onclick="resetDateRangeFilter()" class="glass-effect border border-white/20 hover:bg-white/90 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 text-sm" aria-label="Reset date range filter" type="button">
                             <i class="fas fa-undo"></i>
                             <span>Reset</span>
                         </button>
-                        <button onclick="exportReport('excel')" class="btn-secondary text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all text-sm">
+                        <button onclick="exportReport('excel')" class="btn-secondary text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all text-sm" aria-label="Export to spreadsheet" type="button">
                             <i class="fas fa-file-excel"></i>
                             <span>Export to Spreadsheet</span>
                         </button>
@@ -234,8 +235,8 @@
         </div>
     </div>
 
-    <div id="formModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 modal-overlay" onclick="closeModal('formModal')"></div>
+    <div id="formModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="formModalTitle">
+        <div class="absolute inset-0 modal-overlay" onclick="closeModal('formModal')" role="button" tabindex="0" aria-label="Close modal" onkeypress="if(event.key==='Enter'||event.key===' ') closeModal('formModal')"></div>
         <div class="glass-effect rounded-3xl shadow-2xl z-10 w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col card-hover">
             <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-blue-50 to-slate-100">
               <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
@@ -243,10 +244,10 @@
                       <div class="w-10 h-10 bg-gradient-to-br from-blue-700 to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
                           <i class="fas fa-user-plus text-white"></i>
                       </div>
-                      <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Create New Entries</h3>
+                      <h3 id="formModalTitle" class="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Create New Entries</h3>
                   </div>
               </div>
-              <button onclick="closeModal('formModal')" class="text-gray-400 hover:text-red-500 text-2xl ml-4 transition-colors hover:rotate-90 transform duration-300">
+              <button onclick="closeModal('formModal')" class="text-gray-400 hover:text-red-500 text-2xl ml-4 transition-colors hover:rotate-90 transform duration-300" aria-label="Close form modal" type="button">
                   <i class="fas fa-times"></i>
               </button>
             </div>
@@ -262,42 +263,42 @@
                 
                 <div id="formContent" class="space-y-6">
                     <div>
-                        <label class="block text-sm font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
+                        <label for="projNameInput" class="block text-sm font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
                             <i class="fas fa-project-diagram"></i>
-                            Project Name <span class="text-xs font-normal text-gray-600">(e.g. 2026 FIES V1, 2026 1st Quarter Fisheries, etc) - must include YEAR/MONTH/QUARTER</span>
+                            Project Name <span id="projectHelp" class="text-xs font-normal text-gray-600">(e.g. 2026 FIES V1, 2026 1st Quarter Fisheries, etc) - must include YEAR/MONTH/QUARTER</span>
                         </label>
-                        <input list="projectList" name="projName" id="projNameInput" placeholder="Select or type..." class="w-full p-2 text-sm input-modern rounded-xl outline-none">
+                        <input list="projectList" name="projName" id="projNameInput" placeholder="Select or type..." class="w-full p-2 text-sm input-modern rounded-xl outline-none" aria-label="Project Name" aria-describedby="projectHelp">
                         <datalist id="projectList">
                             </datalist>
                     </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
+                            <label for="trainingStartDate" class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
                                 <i class="fas fa-calendar-alt"></i>
                                 Training Start (Optional)
                             </label>
-                            <input type="date" name="trainingStartDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none">
+                            <input type="date" name="trainingStartDate" id="trainingStartDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none" aria-label="Training Start Date">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
+                            <label for="trainingEndDate" class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
                                 <i class="fas fa-calendar-check"></i>
                                 Training End (Optional)
                             </label>
-                            <input type="date" name="trainingEndDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none">
+                            <input type="date" name="trainingEndDate" id="trainingEndDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none" aria-label="Training End Date">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
+                            <label for="startDate" class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
                                 <i class="fas fa-play-circle"></i>
                                 Contract Start
                             </label>
-                            <input type="date" name="startDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none">
+                            <input type="date" name="startDate" id="startDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none" aria-label="Contract Start Date" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
+                            <label for="endDate" class="block text-xs font-bold text-blue-700 uppercase mb-2 flex items-center gap-2">
                                 <i class="fas fa-stop-circle"></i>
                                 Contract End
                             </label>
-                            <input type="date" name="endDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none">
+                            <input type="date" name="endDate" id="endDate" class="w-full p-2 text-sm input-modern rounded-xl outline-none" aria-label="Contract End Date" required>
                         </div>
                     </div>
                 </div>
@@ -338,9 +339,9 @@
                           QTY
                       </span>
                       <input type="number" id="rowCount" value="1" min="1" max="50" 
-                            class="w-20 p-2 text-xs outline-none focus:bg-blue-50 transition-colors font-semibold">
+                            class="w-20 p-2 text-xs outline-none focus:bg-blue-50 transition-colors font-semibold" aria-label="Number of personnel rows to add">
                   </div>
-                  <button onclick="handleMultipleRows()" class="btn-secondary text-white text-xs font-semibold flex items-center gap-2 px-4 py-2 rounded-xl transition-all">
+                  <button onclick="handleMultipleRows()" class="btn-secondary text-white text-xs font-semibold flex items-center gap-2 px-4 py-2 rounded-xl transition-all" aria-label="Add personnel rows" type="button">
                       <i class="fas fa-user-plus"></i>
                       <span>Add Personnel</span>
                   </button>
@@ -353,11 +354,11 @@
                 <span id="formEntryInfo" class="text-sm text-gray-700 font-medium">Personnel entries ready</span>
             </div>
             <div class="flex gap-3">
-                <button onclick="clearForm()" class="px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold rounded-xl flex items-center gap-2">
+                <button onclick="clearForm()" class="px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold rounded-xl flex items-center gap-2" aria-label="Clear form" type="button">
                     <i class="fas fa-eraser"></i>
                     Clear Form
                 </button>
-                <button onclick="submitAllEntries()" id="submitBtn" class="btn-primary text-white px-6 py-2 rounded-xl font-bold flex items-center gap-2">
+                <button onclick="submitAllEntries()" id="submitBtn" class="btn-primary text-white px-6 py-2 rounded-xl font-bold flex items-center gap-2" aria-label="Save all records" type="button">
                     <i class="fas fa-save"></i>
                     <span>Save All Records</span>
                 </button>
@@ -366,8 +367,8 @@
         </div>
     </div>
 
-    <div id="tableModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 modal-overlay" onclick="closeModal('tableModal')"></div>
+    <div id="tableModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="tableModalTitle">
+        <div class="absolute inset-0 modal-overlay" onclick="closeModal('tableModal')" role="button" tabindex="0" aria-label="Close modal" onkeypress="if(event.key==='Enter'||event.key===' ') closeModal('tableModal')"></div>
         <div class="glass-effect rounded-2xl shadow-2xl z-10 w-full max-w-7xl h-[85vh] flex flex-col card-hover overflow-hidden">
             <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-slate-100">
               <div class="flex justify-between items-center mb-4">
@@ -375,9 +376,9 @@
                       <div class="w-10 h-10 bg-gradient-to-br from-blue-700 to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
                           <i class="fas fa-database text-white"></i>
                       </div>
-                      <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Database Records</h3>
+                      <h3 id="tableModalTitle" class="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Database Records</h3>
                   </div>
-                  <button onclick="closeModal('tableModal')" class="text-gray-400 hover:text-red-500 text-2xl transition-colors hover:rotate-90 transform duration-300">
+                  <button onclick="closeModal('tableModal')" class="text-gray-400 hover:text-red-500 text-2xl transition-colors hover:rotate-90 transform duration-300" aria-label="Close table modal" type="button">
                       <i class="fas fa-times"></i>
                   </button>
               </div>
@@ -386,12 +387,12 @@
                       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <i class="fas fa-search text-gray-400"></i>
                       </div>
-                      <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Search records..." class="w-full pl-10 pr-10 py-2 input-modern rounded-lg outline-none">
-                      <button type="button" onclick="clearTableSearch()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors">
+                      <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Search records..." class="w-full pl-10 pr-10 py-2 input-modern rounded-lg outline-none" aria-label="Search records">
+                      <button type="button" onclick="clearTableSearch()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors" aria-label="Clear search" tabindex="0" onkeypress="if(event.key==='Enter'||event.key===' ') clearTableSearch()">
                           <i class="fas fa-times-circle"></i>
                       </button>
                   </div>
-                  <button onclick="toggleAdvancedFilters()" class="glass-effect border border-white/20 hover:bg-white/90 text-purple-700 px-3 py-2 rounded-lg font-medium transition-all flex items-center gap-2 whitespace-nowrap">
+                  <button onclick="toggleAdvancedFilters()" class="glass-effect border border-white/20 hover:bg-white/90 text-purple-700 px-3 py-2 rounded-lg font-medium transition-all flex items-center gap-2 whitespace-nowrap" aria-label="Toggle advanced filters" type="button" aria-expanded="false" aria-controls="advancedFiltersSection">
                       <i class="fas fa-filter text-sm"></i>
                       <span class="text-sm">Filters</span>
                       <i id="filterToggleIcon" class="fas fa-chevron-down text-xs"></i>
@@ -406,7 +407,7 @@
                           <h4 class="text-sm font-bold text-purple-700">Filters</h4>
                       </div>
                       <div class="flex gap-1">
-                          <button onclick="resetTableFilters()" class="glass-effect border border-white/20 hover:bg-white/90 text-gray-700 px-2 py-1 rounded text-xs font-medium transition-all flex items-center gap-1">
+                          <button onclick="resetTableFilters()" class="glass-effect border border-white/20 hover:bg-white/90 text-gray-700 px-2 py-1 rounded text-xs font-medium transition-all flex items-center gap-1" aria-label="Reset table filters" type="button">
                               <i class="fas fa-times-circle text-xs"></i>
                               <span>Clear</span>
                           </button>
@@ -419,7 +420,7 @@
                               <i class="fas fa-project-diagram text-purple-600 text-xs"></i>
                               Projects
                           </label>
-                          <select id="tableProjectFilter" multiple class="w-full p-1 text-xs input-modern rounded outline-none" size="3">
+                          <select id="tableProjectFilter" multiple class="w-full p-1 text-xs input-modern rounded outline-none" size="3" aria-label="Filter by projects">
                               <!-- Options will be populated dynamically -->
                           </select>
                       </div>
@@ -428,7 +429,7 @@
                               <i class="fas fa-briefcase text-purple-600 text-xs"></i>
                               Positions
                           </label>
-                          <select id="tablePositionFilter" multiple class="w-full p-1 text-xs input-modern rounded outline-none" size="3">
+                          <select id="tablePositionFilter" multiple class="w-full p-1 text-xs input-modern rounded outline-none" size="3" aria-label="Filter by positions">
                               <!-- Options will be populated dynamically -->
                           </select>
                       </div>
@@ -507,11 +508,11 @@
                 <span id="pageInfo" class="text-sm text-gray-700 font-medium">Page 1 of 1</span>
             </div>
             <div class="flex gap-3">
-                <button onclick="changePage(-1)" id="prevBtn" class="px-4 py-2 bg-white border border-blue-200 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold text-blue-700 rounded-xl flex items-center gap-2">
+                <button onclick="changePage(-1)" id="prevBtn" class="px-4 py-2 bg-white border border-blue-200 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold text-blue-700 rounded-xl flex items-center gap-2" aria-label="Previous page" type="button">
                     <i class="fas fa-chevron-left"></i>
                     Previous
                 </button>
-                <button onclick="changePage(1)" id="nextBtn" class="px-4 py-2 bg-white border border-blue-200 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold text-blue-700 rounded-xl flex items-center gap-2">
+                <button onclick="changePage(1)" id="nextBtn" class="px-4 py-2 bg-white border border-blue-200 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold text-blue-700 rounded-xl flex items-center gap-2" aria-label="Next page" type="button">
                     Next
                     <i class="fas fa-chevron-right"></i>
                 </button>
@@ -830,22 +831,22 @@
       };
       Object.defineProperty(window, 'allRecords', {
         get: () => StateManager.getState('records.all'),
-        set: (value) => StateManager.updateState('records.all', value)
+        set: (value) => { StateManager.updateState('records.all', value); }
       });
       
       Object.defineProperty(window, 'filteredRecords', {
         get: () => StateManager.getState('records.filtered'),
-        set: (value) => StateManager.updateState('records.filtered', value)
+        set: (value) => { StateManager.updateState('records.filtered', value); }
       });
       
       Object.defineProperty(window, 'currentPage', {
         get: () => StateManager.getState('records.currentPage'),
-        set: (value) => StateManager.updateState('records.currentPage', value)
+        set: (value) => { StateManager.updateState('records.currentPage', value); }
       });
       
       Object.defineProperty(window, 'editingRecordId', {
         get: () => StateManager.getState('editing.recordId'),
-        set: (value) => StateManager.updateState('editing.recordId', value)
+        set: (value) => { StateManager.updateState('editing.recordId', value); }
       });
       function formatDateToDisplay(dateString) {
         if (!dateString) return '';
@@ -900,10 +901,9 @@
         console.log(" Preloading form data in background...");
         
         try {
-          const [positions, projects, currentNum, tableData] = await Promise.all([
+          const [positions, projects, tableData] = await Promise.all([
             apiClient.call('getPositions'),
             apiClient.call('getProjectList'),
-            apiClient.call('getProjectNumber'),
             apiClient.call('getData')
           ]);
           
@@ -959,9 +959,9 @@
                   projectFilter.appendChild(createOptions(projects));
                   
                   // Add event listener if not already added
-                  if (!projectFilter.hasAttribute('data-listener-added')) {
+                  if (!projectFilter.dataset.listenerAdded) {
                     projectFilter.addEventListener('change', applyTableFilters);
-                    projectFilter.setAttribute('data-listener-added', 'true');
+                    projectFilter.dataset.listenerAdded = 'true';
                   }
                 }
               }
@@ -975,9 +975,9 @@
                   positionFilter.appendChild(createOptions(positions));
                   
                   // Add event listener if not already added
-                  if (!positionFilter.hasAttribute('data-listener-added')) {
+                  if (!positionFilter.dataset.listenerAdded) {
                     positionFilter.addEventListener('change', applyTableFilters);
-                    positionFilter.setAttribute('data-listener-added', 'true');
+                    positionFilter.dataset.listenerAdded = 'true';
                   }
                 }
               }
@@ -1016,10 +1016,9 @@
         console.log("🔄 Preloading not complete, loading data now...");
         
         try {
-          const [positions, projects, currentNum] = await Promise.all([
+          const [positions, projects] = await Promise.all([
             apiClient.call('getPositions'),
-            apiClient.call('getProjectList'),
-            apiClient.call('getProjectNumber')
+            apiClient.call('getProjectList')
           ]);
           
           // Batch UI updates for smooth rendering
@@ -1059,9 +1058,7 @@
           }).getPositions();
 
         google.script.run
-          .withSuccessHandler(function(currentNum) {
-            console.log(currentNum);
-          }).getProjectNumber();
+          .getProjectNumber();
 
         google.script.run
           .withSuccessHandler(function(projects) {
@@ -1128,10 +1125,11 @@
       function handleDateChange() {
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
+        
         if (dateFrom && dateTo) {
           if (new Date(dateFrom) > new Date(dateTo)) {
             const dateRangeInfo = document.getElementById('dateRangeInfo');
-            dateRangeInfo.textContent = '⚠️ From date cannot be later than To date';
+            dateRangeInfo.textContent = 'From date cannot be later than To date';
             dateRangeInfo.className = 'text-sm text-red-600 font-medium';
             
             setTimeout(() => {
@@ -1141,11 +1139,10 @@
             return;
           }
           applyDateRangeFilter();
-          if (!dateFrom && !dateTo) {
-            document.getElementById('dateRangeInfo').textContent = 
-              'Showing all records. Select a date range to filter dashboard statistics.';
-            loadDashboardStats();
-          }
+        } else {
+          document.getElementById('dateRangeInfo').textContent = 
+            'Showing all records. Select a date range to filter dashboard statistics.';
+          loadDashboardStats();
         }
       }
       
@@ -1363,8 +1360,8 @@
           return;
         }
         
-        const presetIndex = parseInt(selection) - 1;
-        if (isNaN(presetIndex) || presetIndex < 0 || presetIndex >= tableFilterPresets.length) {
+        const presetIndex = Number.parseInt(selection) - 1;
+        if (Number.isNaN(presetIndex) || presetIndex < 0 || presetIndex >= tableFilterPresets.length) {
           alert('Invalid selection. Please enter a valid number.');
           return;
         }
@@ -1995,7 +1992,7 @@
           firstNameInput.value = (record[3] || '').toUpperCase();
           firstNameInput.className = 'w-full p-1 text-sm border rounded';
           firstNameInput.placeholder = 'First Name';
-          firstNameInput.setAttribute('data-subfield', 'firstName');
+          firstNameInput.dataset.subfield = 'firstName';
           nameCell.appendChild(firstNameInput);
           
           const lastNameInput = document.createElement('input');
@@ -2003,7 +2000,7 @@
           lastNameInput.value = (record[2] || '').toUpperCase();
           lastNameInput.className = 'w-full p-1 text-sm border rounded mt-1';
           lastNameInput.placeholder = 'Last Name';
-          lastNameInput.setAttribute('data-subfield', 'lastName');
+          lastNameInput.dataset.subfield = 'lastName';
           nameCell.appendChild(lastNameInput);
         }
         
@@ -2013,7 +2010,7 @@
           projectInput.type = 'text';
           projectInput.value = (record[10] || '').toUpperCase();
           projectInput.className = 'w-full p-1 text-sm border rounded';
-          projectInput.setAttribute('data-subfield', 'project');
+          projectInput.dataset.subfield = 'project';
           projectCell.appendChild(projectInput);
         }
         
@@ -2021,7 +2018,7 @@
           genderCell.innerHTML = ''; // Clear first
           const genderSelect = document.createElement('select');
           genderSelect.className = 'w-full p-1 text-sm border rounded';
-          genderSelect.setAttribute('data-subfield', 'gender');
+          genderSelect.dataset.subfield = 'gender';
           
           const maleOption = document.createElement('option');
           maleOption.value = 'Male';
@@ -2042,7 +2039,7 @@
           positionCell.innerHTML = ''; // Clear first
           const positionSelect = document.createElement('select');
           positionSelect.className = 'w-full p-1 text-sm border rounded';
-          positionSelect.setAttribute('data-subfield', 'position');
+          positionSelect.dataset.subfield = 'position';
           
           dynamicPositions.forEach(pos => {
             const option = document.createElement('option');
@@ -2061,7 +2058,7 @@
           salaryInput.type = 'number';
           salaryInput.value = record[8] || 0;
           salaryInput.className = 'w-full p-1 text-sm border rounded';
-          salaryInput.setAttribute('data-subfield', 'salary');
+          salaryInput.dataset.subfield = 'salary';
           salaryCell.appendChild(salaryInput);
         }
         
@@ -2071,7 +2068,7 @@
           emailInput.type = 'email';
           emailInput.value = (record[9] || '').toLowerCase();
           emailInput.className = 'w-full p-1 text-sm border rounded';
-          emailInput.setAttribute('data-subfield', 'email');
+          emailInput.dataset.subfield = 'email';
           emailCell.appendChild(emailInput);
         }
         
@@ -2094,40 +2091,7 @@
         }
       }
       
-      async function saveInlineEdit(rowIndex) {
-        const allRecordsForEdit = StateManager.getState('records.all');
-        const record = allRecordsForEdit[rowIndex];
-        
-        if (!record) {
-          console.error('Record not found at index:', rowIndex);
-          showNotification('Record not found', 'error');
-          return;
-        }
-        
-        // Use the record's original index (stored in record[0]) to find the correct row
-        const originalRowIndex = record[0] - 1;
-        const row = document.querySelector(`tr[data-row="${originalRowIndex}"]`) || 
-                    document.querySelector(`[data-row="${originalRowIndex}"]`).closest('tr');
-        
-        if (!row) return;
-        
-        // Get new values and convert to proper case
-        const firstName = (row.querySelector('[data-subfield="firstName"]')?.value || '').toUpperCase();
-        const lastName = (row.querySelector('[data-subfield="lastName"]')?.value || '').toUpperCase();
-        const project = (row.querySelector('[data-subfield="project"]')?.value || '').toUpperCase();
-        const gender = row.querySelector('[data-subfield="gender"]')?.value || '';
-        const position = row.querySelector('[data-subfield="position"]')?.value || '';
-        const salary = row.querySelector('[data-subfield="salary"]')?.value || 0;
-        const email = (row.querySelector('[data-subfield="email"]')?.value || '').toLowerCase();
-        
-        console.log('🔍 Inline Edit Values:', {
-          firstName, lastName, project, gender, position, salary, email,
-          emailLength: email.length,
-          hasAt: email.includes('@'),
-          hasDot: email.includes('.')
-        });
-        
-        // VALIDATION: Check all required fields
+      function validateInlineEditData(firstName, lastName, project, gender, position, salary, email) {
         const errors = [];
         
         if (!firstName && !lastName) {
@@ -2142,7 +2106,7 @@
           errors.push("Position is required");
         }
         
-        if (!salary || isNaN(salary) || parseFloat(salary) <= 0) {
+        if (!salary || Number.isNaN(salary) || Number.parseFloat(salary) <= 0) {
           errors.push("Valid Salary is required");
         }
         
@@ -2150,40 +2114,116 @@
           errors.push("Valid Email format required (leave empty if not available)");
         }
         
-        // If validation fails, show error and stop
+        return errors;
+      }
+      
+      function extractInlineEditValues(row) {
+        return {
+          firstName: (row.querySelector('[data-subfield="firstName"]')?.value || '').toUpperCase(),
+          lastName: (row.querySelector('[data-subfield="lastName"]')?.value || '').toUpperCase(),
+          project: (row.querySelector('[data-subfield="project"]')?.value || '').toUpperCase(),
+          gender: row.querySelector('[data-subfield="gender"]')?.value || '',
+          position: row.querySelector('[data-subfield="position"]')?.value || '',
+          salary: row.querySelector('[data-subfield="salary"]')?.value || 0,
+          email: (row.querySelector('[data-subfield="email"]')?.value || '').toLowerCase()
+        };
+      }
+      
+      function updateLocalRecord(record, values) {
+        record[2] = values.lastName;
+        record[3] = values.firstName;
+        record[6] = values.gender;
+        record[7] = values.position;
+        record[8] = values.salary;
+        record[9] = values.email;
+        record[10] = values.project;
+      }
+      
+      function setSaveButtonState(saveBtn, state) {
+        if (!saveBtn) return;
+        
+        const states = {
+          loading: '<i class="fas fa-spinner fa-spin"></i> Saving...',
+          saved: '<i class="fas fa-check"></i> Saved',
+          save: '<i class="fas fa-save"></i> Save',
+          edit: '<i class="fas fa-edit"></i> Edit'
+        };
+        
+        scheduleUIUpdate(() => {
+          saveBtn.innerHTML = states[state] || states.save;
+          saveBtn.disabled = state === 'loading';
+        });
+      }
+      
+      async function handleSuccessfulUpdate(rowIndex, result, saveBtn) {
+        await batchDOMUpdates([
+          () => refreshRowDisplay(rowIndex),
+          () => { inlineEditingRow = null; },
+          () => {
+            setSaveButtonState(saveBtn, 'saved');
+            setTimeout(() => {
+              setSaveButtonState(saveBtn, 'edit');
+            }, 1000);
+          }
+        ]);
+        
+        showNotification(result.message || 'Record updated successfully!', 'success');
+      }
+      
+      function handleUpdateError(saveBtn, error) {
+        setSaveButtonState(saveBtn, 'save');
+        showNotification('Error updating record: ' + error, 'error');
+      }
+      
+      async function saveInlineEdit(rowIndex) {
+        const allRecordsForEdit = StateManager.getState('records.all');
+        const record = allRecordsForEdit[rowIndex];
+        
+        if (!record) {
+          console.error('Record not found at index:', rowIndex);
+          showNotification('Record not found', 'error');
+          return;
+        }
+        
+        const originalRowIndex = record[0] - 1;
+        const row = document.querySelector(`tr[data-row="${originalRowIndex}"]`) || 
+                    document.querySelector(`[data-row="${originalRowIndex}"]`).closest('tr');
+        
+        if (!row) return;
+        
+        const values = extractInlineEditValues(row);
+        
+        console.log('🔍 Inline Edit Values:', {
+          ...values,
+          emailLength: values.email.length,
+          hasAt: values.email.includes('@'),
+          hasDot: values.email.includes('.')
+        });
+        
+        const errors = validateInlineEditData(
+          values.firstName, values.lastName, values.project, 
+          values.gender, values.position, values.salary, values.email
+        );
+        
         if (errors.length > 0) {
           showNotification('Validation Error: ' + errors.join(', '), 'error');
           return;
         }
         
-        // Show loading state immediately for instant feedback
         const saveBtn = row.querySelector('.fa-save')?.parentElement;
-        if (saveBtn) {
-          scheduleUIUpdate(() => {
-            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-            saveBtn.disabled = true;
-          });
-        }
+        setSaveButtonState(saveBtn, 'loading');
         
         try {
-          // Update local state immediately for instant UI feedback
-          record[2] = lastName;
-          record[3] = firstName;
-          record[6] = gender;
-          record[7] = position;
-          record[8] = salary;
-          record[9] = email;
-          record[10] = project;
+          updateLocalRecord(record, values);
           
-          // Update backend async
           const updatedRow = {
-            firstName: firstName,
-            lastName: lastName,
-            gender: gender,
-            position: position,
-            salary: salary,
-            email: email,
-            project: project
+            firstName: values.firstName,
+            lastName: values.lastName,
+            gender: values.gender,
+            position: values.position,
+            salary: values.salary,
+            email: values.email,
+            project: values.project
           };
           
           console.log('🚀 Calling backend update:', {
@@ -2195,7 +2235,6 @@
           
           const response = await apiClient.call('updateRecordById', record[16], updatedRow);
           
-          // Parse JSON response if needed
           let result;
           try {
             result = typeof response === 'string' ? JSON.parse(response) : response;
@@ -2205,44 +2244,13 @@
           }
           
           if (result.success) {
-            // Batch UI updates for smooth rendering
-            await batchDOMUpdates([
-              () => refreshRowDisplay(rowIndex),
-              () => { inlineEditingRow = null; },
-              () => {
-                if (saveBtn) {
-                  saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved';
-                  setTimeout(() => {
-                    saveBtn.innerHTML = '<i class="fas fa-edit"></i> Edit';
-                    saveBtn.disabled = false;
-                  }, 1000);
-                }
-              }
-            ]);
-            
-            // Show success message
-            showNotification(result.message || 'Record updated successfully!', 'success');
+            await handleSuccessfulUpdate(rowIndex, result, saveBtn);
           } else {
-            // Revert UI changes on error
-            if (saveBtn) {
-              scheduleUIUpdate(() => {
-                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save';
-                saveBtn.disabled = false;
-              });
-            }
-            showNotification('Error updating record: ' + (result.error || 'Unknown error'), 'error');
+            handleUpdateError(saveBtn, result.error || 'Unknown error');
           }
         } catch (error) {
           console.error('❌ Backend error:', error);
-          
-          // Revert UI changes on error
-          if (saveBtn) {
-            scheduleUIUpdate(() => {
-              saveBtn.innerHTML = '<i class="fas fa-save"></i> Save';
-              saveBtn.disabled = false;
-            });
-          }
-          showNotification('Error updating record: ' + error, 'error');
+          handleUpdateError(saveBtn, error);
         }
       }
       
@@ -2286,7 +2294,6 @@
         if (!row) return;
         
         // Re-render row with updated values
-        const dateStr = record[1] ? new Date(record[1]).toLocaleDateString() : '';
         const startStr = record[11] || '-';
         const endStr = record[12] || '-';
         const trainingStartStr = record[14] || '-';
@@ -2316,14 +2323,28 @@
       
       function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
-        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all transform ${
-          type === 'success' ? 'bg-green-500 text-white' : 
-          type === 'error' ? 'bg-red-500 text-white' : 
-          'bg-blue-500 text-white'
-        }`;
+        let notificationClass;
+        if (type === 'success') {
+          notificationClass = 'bg-green-500 text-white';
+        } else if (type === 'error') {
+          notificationClass = 'bg-red-500 text-white';
+        } else {
+          notificationClass = 'bg-blue-500 text-white';
+        }
+        
+        let iconClass;
+        if (type === 'success') {
+          iconClass = 'check-circle';
+        } else if (type === 'error') {
+          iconClass = 'exclamation-circle';
+        } else {
+          iconClass = 'info-circle';
+        }
+        
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all transform ${notificationClass}`;
         notification.innerHTML = `
           <div class="flex items-center gap-2">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <i class="fas fa-${iconClass}"></i>
             <span>${message}</span>
           </div>
         `;
@@ -2370,28 +2391,28 @@
           <td class="py-3 pr-3">
             <div class="flex gap-2 items-center">
                 <div class="relative flex-1">
-                    <input type="text" name="firstname" placeholder="Firstname" value="${escapeAttribute(record[3] || '')}" class="p-3 text-sm input-modern rounded-lg w-full">
+                    <input type="text" name="firstname" placeholder="Firstname" value="${escapeAttribute(record[3] || '')}" class="p-3 text-sm input-modern rounded-lg w-full" aria-label="Firstname">
                 </div>
                 <div class="relative flex-1">
-                    <input type="text" name="middlename" placeholder="Middlename" value="${escapeAttribute(record[4] || '')}" class="p-3 text-sm input-modern rounded-lg w-full">
+                    <input type="text" name="middlename" placeholder="Middlename" value="${escapeAttribute(record[4] || '')}" class="p-3 text-sm input-modern rounded-lg w-full" aria-label="Middlename">
                 </div>
                 <div class="relative flex-1">
-                    <input type="text" name="lastname" placeholder="Lastname" value="${escapeAttribute(record[2] || '')}" class="p-3 text-sm input-modern rounded-lg w-full">
+                    <input type="text" name="lastname" placeholder="Lastname" value="${escapeAttribute(record[2] || '')}" class="p-3 text-sm input-modern rounded-lg w-full" aria-label="Lastname">
                 </div>
                 <div class="relative w-20">
-                    <input type="text" name="suffix" placeholder="Suffix" value="${escapeAttribute(record[5] || '')}" class="p-3 text-sm input-modern rounded-lg w-full text-center">
+                    <input type="text" name="suffix" placeholder="Suffix" value="${escapeAttribute(record[5] || '')}" class="p-3 text-sm input-modern rounded-lg w-full text-center" aria-label="Suffix">
                 </div>
             </div>
           </td>
           <td class="py-3 px-2 w-32">
-            <select name="gender" class="p-3 text-sm input-modern rounded-lg w-full">
+            <select name="gender" class="p-3 text-sm input-modern rounded-lg w-full" aria-label="Select gender">
               <option value="">Select...</option>
               <option ${record[6] === 'Male' ? 'selected' : ''}>Male</option>
               <option ${record[6] === 'Female' ? 'selected' : ''}>Female</option>
             </select>
           </td>
           <td class="py-3 px-2 w-56">
-            <select name="position" class="p-3 text-sm input-modern rounded-lg w-full">
+            <select name="position" class="p-3 text-sm input-modern rounded-lg w-full" aria-label="Select position">
               <option value="">Select...</option>
               ${optionsHtml}
             </select>
@@ -2401,7 +2422,7 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-peso-sign text-gray-400 text-sm"></i>
                 </div>
-                <input type="number" name="salary" placeholder="0.00" value="${escapeAttribute(record[8] || '')}" class="p-3 pl-8 text-sm input-modern rounded-lg w-full text-right">
+                <input type="number" name="salary" placeholder="0.00" value="${escapeAttribute(record[8] || '')}" class="p-3 pl-8 text-sm input-modern rounded-lg w-full text-right" aria-label="Salary">
             </div>
           </td>
           <td class="py-3 px-2">
@@ -2409,11 +2430,11 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-envelope text-gray-400 text-sm"></i>
                 </div>
-                <input type="email" name="email" placeholder="email@example.com" value="${escapeAttribute(record[9] || '')}" class="p-3 pl-10 text-sm input-modern rounded-lg w-full">
+                <input type="email" name="email" placeholder="email@example.com" value="${escapeAttribute(record[9] || '')}" class="p-3 pl-10 text-sm input-modern rounded-lg w-full" aria-label="Email address">
             </div>
           </td>
           <td class="py-3 pl-2 text-center w-16 removeRowContainer">
-            <button onclick="this.parentElement.parentElement.remove()" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all text-lg">
+            <button onclick="this.parentElement.parentElement.remove()" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all text-lg" aria-label="Remove row" type="button">
                 <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -2428,13 +2449,13 @@
           field.addEventListener('blur', () => validateField(field));
           field.addEventListener('input', () => {
             // Convert name fields to uppercase as user types
-            if (field.getAttribute('data-subfield') === 'firstName' || 
-                field.getAttribute('data-subfield') === 'lastName' || 
-                field.getAttribute('data-subfield') === 'project') {
+            if (field.dataset.subfield === 'firstName' || 
+                field.dataset.subfield === 'lastName' || 
+                field.dataset.subfield === 'project') {
               field.value = field.value.toUpperCase();
             }
             // Convert email to lowercase as user types
-            if (field.getAttribute('data-subfield') === 'email') {
+            if (field.dataset.subfield === 'email') {
               field.value = field.value.toLowerCase();
             }
             // Clear error styling on input
@@ -2557,7 +2578,7 @@ function renderTable() {
       // New helper function to handle the quantity input
       function handleMultipleRows() {
         const countInput = document.getElementById('rowCount');
-        const count = parseInt(countInput.value) || 1; // Default to 1 if empty/invalid
+        const count = Number.parseInt(countInput.value) || 1; // Default to 1 if empty/invalid
         
         for (let i = 0; i < count; i++) {
           addNewEntryRows(i === count - 1); // Only scroll on the very last row added
@@ -2582,28 +2603,28 @@ function renderTable() {
           <td class="py-2 pr-2">
             <div class="flex gap-1 items-center">
                 <div class="relative flex-1">
-                    <input type="text" name="firstname" placeholder="Firstname" class="p-2 text-xs input-modern rounded w-full">
+                    <input type="text" name="firstname" placeholder="Firstname" class="p-2 text-xs input-modern rounded w-full" aria-label="Firstname">
                 </div>
                 <div class="relative flex-1">
-                    <input type="text" name="middlename" placeholder="Middlename" class="p-2 text-xs input-modern rounded w-full">
+                    <input type="text" name="middlename" placeholder="Middlename" class="p-2 text-xs input-modern rounded w-full" aria-label="Middlename">
                 </div>
                 <div class="relative flex-1">
-                    <input type="text" name="lastname" placeholder="Lastname" class="p-2 text-xs input-modern rounded w-full">
+                    <input type="text" name="lastname" placeholder="Lastname" class="p-2 text-xs input-modern rounded w-full" aria-label="Lastname">
                 </div>
                 <div class="relative w-12">
-                    <input type="text" name="suffix" placeholder="Suffix" class="p-2 text-xs input-modern rounded w-full text-center">
+                    <input type="text" name="suffix" placeholder="Suffix" class="p-2 text-xs input-modern rounded w-full text-center" aria-label="Suffix">
                 </div>
             </div>
           </td>
           <td class="py-2 px-1 w-24">
-            <select name="gender" class="p-2 text-xs input-modern rounded w-full">
+            <select name="gender" class="p-2 text-xs input-modern rounded w-full" aria-label="Select gender">
               <option value="">Select...</option>
               <option>Male</option>
               <option>Female</option>
             </select>
           </td>
           <td class="py-2 px-1 w-48">
-            <select name="position" class="p-2 text-xs input-modern rounded w-full">
+            <select name="position" class="p-2 text-xs input-modern rounded w-full" aria-label="Select position">
               <option value="">Select...</option>
               ${optionsHtml}
             </select>
@@ -2613,7 +2634,7 @@ function renderTable() {
                 <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                     <i class="fas fa-peso-sign text-gray-400 text-xs"></i>
                 </div>
-                <input type="number" name="salary" placeholder="0.00" class="p-2 pl-6 text-xs input-modern rounded w-full text-right">
+                <input type="number" name="salary" placeholder="0.00" class="p-2 pl-6 text-xs input-modern rounded w-full text-right" aria-label="Salary">
             </div>
           </td>
           <td class="py-2 px-1">
@@ -2621,11 +2642,11 @@ function renderTable() {
                 <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                     <i class="fas fa-envelope text-gray-400 text-xs"></i>
                 </div>
-                <input type="email" name="email" placeholder="email@example.com" class="p-2 pl-8 text-xs input-modern rounded w-full">
+                <input type="email" name="email" placeholder="email@example.com" class="p-2 pl-8 text-xs input-modern rounded w-full" aria-label="Email address">
             </div>
           </td>
           <td class="py-2 pl-1 text-center w-12 removeRowContainer">
-            <button onclick="this.parentElement.parentElement.remove()" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-1 rounded transition-all text-sm">
+            <button onclick="this.parentElement.parentElement.remove()" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-1 rounded transition-all text-sm" aria-label="Remove row" type="button">
                 <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -2669,7 +2690,7 @@ function renderTable() {
             isValid = value === '' || (value.includes('@') && value.includes('.'));
             break;
           case 'salary':
-            isValid = value === '' || (!isNaN(value) && parseFloat(value) > 0);
+            isValid = value === '' || (!Number.isNaN(value) && Number.parseFloat(value) > 0);
             break;
           case 'firstname':
           case 'lastname':
@@ -2741,7 +2762,7 @@ function renderTable() {
           errors.push("Position is required");
         }
         
-        if (!salary || isNaN(salary) || parseFloat(salary) <= 0) {
+        if (!salary || Number.isNaN(salary) || Number.parseFloat(salary) <= 0) {
           errors.push("Valid Salary is required");
         }
         
@@ -3416,55 +3437,78 @@ function renderTable() {
         static validateField(value, fieldName, rules) {
           const errors = [];
           
-          // Required validation
-          if (rules.required && (value === undefined || value === null || value === '')) {
-            errors.push(rules.message || `${fieldName} is required`);
-            return errors; // Skip other validations if required field is missing
-          }
-          
-          // Skip validation if field is not required and empty
-          if (!rules.required && (value === undefined || value === null || value === '')) {
+          if (!this.shouldValidateField(value, rules)) {
             return errors;
           }
           
-          // Type validation
-          if (rules.type) {
-            const typeError = this.validateType(value, fieldName, rules);
-            if (typeError) errors.push(typeError);
+          if (rules.required && this.isEmptyValue(value)) {
+            errors.push(rules.message || `${fieldName} is required`);
+            return errors;
           }
           
-          // String validations
+          this.validateFieldType(value, fieldName, rules, errors);
+          this.validateFieldValue(value, fieldName, rules, errors);
+          
+          return errors;
+        }
+        
+        static shouldValidateField(value, rules) {
+          return !(!rules.required && this.isEmptyValue(value));
+        }
+        
+        static isEmptyValue(value) {
+          return value === undefined || value === null || value === '';
+        }
+        
+        static validateFieldType(value, fieldName, rules, errors) {
+          if (!rules.type) return;
+          
+          const typeError = this.validateType(value, fieldName, rules);
+          if (typeError) {
+            errors.push(typeError);
+          }
+        }
+        
+        static validateFieldValue(value, fieldName, rules, errors) {
           if (rules.type === 'string' && typeof value === 'string') {
-            if (rules.minLength && value.length < rules.minLength) {
-              errors.push(`${fieldName} must be at least ${rules.minLength} characters`);
-            }
-            if (rules.maxLength && value.length > rules.maxLength) {
-              errors.push(`${fieldName} must not exceed ${rules.maxLength} characters`);
-            }
+            this.validateStringConstraints(value, fieldName, rules, errors);
+          } else if (rules.type === 'number') {
+            this.validateNumberConstraints(value, fieldName, rules, errors);
           }
           
-          // Number validations
-          if (rules.type === 'number') {
-            const numValue = parseFloat(value);
-            if (rules.min !== undefined && numValue < rules.min) {
-              errors.push(`${fieldName} must be at least ${rules.min}`);
-            }
-            if (rules.max !== undefined && numValue > rules.max) {
-              errors.push(`${fieldName} must not exceed ${rules.max}`);
-            }
+          this.validateEnumConstraint(value, fieldName, rules, errors);
+          this.validatePatternConstraint(value, fieldName, rules, errors);
+        }
+        
+        static validateStringConstraints(value, fieldName, rules, errors) {
+          if (rules.minLength && value.length < rules.minLength) {
+            errors.push(`${fieldName} must be at least ${rules.minLength} characters`);
           }
-          
-          // Enum validation
+          if (rules.maxLength && value.length > rules.maxLength) {
+            errors.push(`${fieldName} must not exceed ${rules.maxLength} characters`);
+          }
+        }
+        
+        static validateNumberConstraints(value, fieldName, rules, errors) {
+          const numValue = Number.parseFloat(value);
+          if (rules.min !== undefined && numValue < rules.min) {
+            errors.push(`${fieldName} must be at least ${rules.min}`);
+          }
+          if (rules.max !== undefined && numValue > rules.max) {
+            errors.push(`${fieldName} must not exceed ${rules.max}`);
+          }
+        }
+        
+        static validateEnumConstraint(value, fieldName, rules, errors) {
           if (rules.enum && !rules.enum.includes(value)) {
             errors.push(`${fieldName} must be one of: ${rules.enum.join(', ')}`);
           }
-          
-          // Pattern validation
+        }
+        
+        static validatePatternConstraint(value, fieldName, rules, errors) {
           if (rules.pattern && typeof value === 'string' && !rules.pattern.test(value)) {
             errors.push(rules.message || `${fieldName} format is invalid`);
           }
-          
-          return errors;
         }
         
         static validateType(value, fieldName, rules) {
@@ -3475,7 +3519,7 @@ function renderTable() {
               }
               break;
             case 'number':
-              if (isNaN(parseFloat(value)) || !isFinite(value)) {
+              if (Number.isNaN(Number.parseFloat(value)) || !Number.isFinite(value)) {
                 return `${fieldName} must be a valid number`;
               }
               break;
@@ -3496,7 +3540,7 @@ function renderTable() {
         static isValidDateString(value) {
           if (typeof value !== 'string') return false;
           const date = new Date(value);
-          return date instanceof Date && !isNaN(date);
+          return date instanceof Date && !Number.isNaN(date);
         }
         
         static validateRow(row, index) {
@@ -3570,11 +3614,6 @@ function renderTable() {
         }
       }
       
-      // Enhanced validation function using schema
-      function validateRow(row, index) {
-        return SchemaValidator.validateRow(row, index);
-      }
-      
       // ===== PERFORMANCE MONITORING DASHBOARD =====
       
       class PerformanceDashboard {
@@ -3592,9 +3631,16 @@ function renderTable() {
           
           // Group metrics by category
           Object.keys(metrics).forEach(key => {
-            const category = key.includes('_failed') ? 'Failed Operations' : 
-                           key.includes('api_') ? 'API Calls' : 
-                           key.includes('filter') ? 'Filtering' : 'Other';
+            let category;
+            if (key.includes('_failed')) {
+              category = 'Failed Operations';
+            } else if (key.includes('api_')) {
+              category = 'API Calls';
+            } else if (key.includes('filter')) {
+              category = 'Filtering';
+            } else {
+              category = 'Other';
+            }
             
             if (!categories[category]) categories[category] = [];
             categories[category].push({ name: key, values: metrics[key] });
@@ -3717,35 +3763,28 @@ function countUniqueCurrentYearColumn10() {
       }
 
 
-      // Add keyboard listeners
-      window.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-          // List all your modal IDs here
-          closeModal('formModal');
-          closeModal('tableModal');
-          
-          // Also close the custom alert if it's open
-          const customAlert = document.getElementById('custom-alert');
-          if (customAlert && !customAlert.classList.contains('hidden')) {
-            document.getElementById('alert-close').click();
+      function handleEscapeKey() {
+        closeModal('formModal');
+        closeModal('tableModal');
+        
+        const customAlert = document.getElementById('custom-alert');
+        if (customAlert && !customAlert.classList.contains('hidden')) {
+          document.getElementById('alert-close').click();
+        }
+      }
+      
+      function handleEnterKey(event) {
+        const formModal = document.getElementById('formModal');
+        if (!formModal.classList.contains('hidden')) {
+          const activeElement = document.activeElement;
+          if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT')) {
+            event.preventDefault();
+            document.getElementById('submitBtn').click();
           }
         }
-        
-        // Prevent Enter key submission in form fields
-        if (event.key === 'Enter') {
-          const formModal = document.getElementById('formModal');
-          if (!formModal.classList.contains('hidden')) {
-            // Check if focus is in an input field within the form modal
-            const activeElement = document.activeElement;
-            if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT')) {
-              event.preventDefault();
-              // Trigger validation instead of submission
-              document.getElementById('submitBtn').click();
-            }
-          }
-        }
-        
-        // Arrow key navigation for table modal
+      }
+      
+      function handleArrowKeys(event) {
         const tableModal = document.getElementById('tableModal');
         if (!tableModal.classList.contains('hidden')) {
           const prevBtn = document.getElementById('prevBtn');
@@ -3758,6 +3797,22 @@ function countUniqueCurrentYearColumn10() {
             event.preventDefault();
             changePage(1);
           }
+        }
+      }
+      
+      // Add keyboard listeners
+      window.addEventListener('keydown', function(event) {
+        switch (event.key) {
+          case 'Escape':
+            handleEscapeKey();
+            break;
+          case 'Enter':
+            handleEnterKey(event);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowRight':
+            handleArrowKeys(event);
+            break;
         }
       });
 
@@ -3842,6 +3897,41 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentKey = null;
   let currentDir = 'asc';
 
+  // Helper function to get column mapping for sorting
+  const getColumnValue = (record, key) => {
+    const columnMap = {
+      'rowId': () => record[16] || '',
+      'refNumber': () => record[13] || '',
+      'name': () => record[3] ? record[3].toLowerCase() : '',
+      'project': () => record[10] ? record[10].toLowerCase() : '',
+      'gender': () => record[6] ? record[6].toLowerCase() : '',
+      'position': () => record[7] ? record[7].toLowerCase() : '',
+      'salary': () => Number.parseFloat(record[8] || 0),
+      'email': () => record[9] ? record[9].toLowerCase() : '',
+      'trainingDates': () => (record[14] || '') + (record[15] || ''),
+      'duration': () => (record[11] || '') + (record[12] || '')
+    };
+    
+    const getter = columnMap[key];
+    return getter ? getter() : null;
+  };
+
+  // Helper function to compare values for sorting
+  const compareValues = (va, vb, dirMul) => {
+    if (typeof va === 'number' && typeof vb === 'number') {
+      if (va < vb) return -1 * dirMul;
+      if (va > vb) return 1 * dirMul;
+      return 0;
+    }
+
+    const strA = typeof va === 'string' ? va : String(va).toLowerCase();
+    const strB = typeof vb === 'string' ? vb : String(vb).toLowerCase();
+    
+    if (strA < strB) return -1 * dirMul;
+    if (strA > strB) return 1 * dirMul;
+    return 0;
+  };
+
   const sortRows = (key, dir) => {
     const dirMul = dir === 'asc' ? 1 : -1;
     
@@ -3851,51 +3941,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (idx < 0) return;
 
     // Use the state manager filtered array and re-sort it
-    const allRecordsForSort = StateManager.getState('records.all');
     const filteredRecordsForSort = StateManager.getState('records.filtered');
     const sorted = filteredRecordsForSort.slice().sort((rA, rB) => {
-      // --- COMPLEX INDEX MAPPING BASED ON renderTable (lines 00328-00339 in original file) ---
-      let va, vb;
-
-      switch(key) {
-          case 'rowId': // Index 16 (Column P)
-              va = rA[16] || ''; vb = rB[16] || ''; break;
-          case 'refNumber': // Index 13
-              va = rA[13] || ''; vb = rB[13] || ''; break;
-          case 'name': // Index 3 (LastName proxy)
-              va = rA[3] ? rA[3].toLowerCase() : ''; vb = rB[3] ? rB[3].toLowerCase() : ''; break;
-          case 'project': // Index 10
-              va = rA[10] ? rA[10].toLowerCase() : ''; vb = rB[10] ? rB[10].toLowerCase() : ''; break;
-          case 'gender': // Index 6
-              va = rA[6] ? rA[6].toLowerCase() : ''; vb = rB[6] ? rB[6].toLowerCase() : ''; break;
-          case 'position': // Index 7
-              va = rA[7] ? rA[7].toLowerCase() : ''; vb = rB[7] ? rB[7].toLowerCase() : ''; break;
-          case 'salary': // Index 8 (numeric)
-              va = parseFloat(rA[8] || 0); vb = parseFloat(rB[8] || 0); break;
-          case 'email': // Index 9
-              va = rA[9] ? rA[9].toLowerCase() : ''; vb = rB[9] ? rB[9].toLowerCase() : ''; break;
-          case 'trainingDates': // Derived (Indices 14, 15)
-              va = (rA[14] || '') + (rA[15] || ''); vb = (rB[14] || '') + (rB[15] || ''); break;
-          case 'duration': // Derived (Indices 11, 12)
-              va = (rA[11] || '') + (rA[12] || ''); vb = (rB[11] || '') + (rB[12] || ''); break;
-          default:
-              return 0;
-      }
-
-      // Type checking for numeric sort
-      if (typeof va === 'number' && typeof vb === 'number') {
-          if (va < vb) return -1 * dirMul;
-          if (va > vb) return 1 * dirMul;
-          return 0;
-      }
-
-      // Fallback to string comparison (case-insensitive for strings)
-      const strA = typeof va === 'string' ? va : String(va).toLowerCase();
-      const strB = typeof vb === 'string' ? vb : String(vb).toLowerCase();
+      const va = getColumnValue(rA, key);
+      const vb = getColumnValue(rB, key);
       
-      if (strA < strB) return -1 * dirMul;
-      if (strA > strB) return 1 * dirMul;
-      return 0;
+      if (va === null || vb === null) return 0;
+      return compareValues(va, vb, dirMul);
     });
     
     // Update the state with sorted data
@@ -3928,8 +3980,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- END OF SORTING SCRIPT ---
 </script>
 
-          <div id="custom-alert" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="absolute inset-0 modal-overlay" onclick="document.getElementById('alert-close').click()"></div>
+          <div id="custom-alert" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-labelledby="alert-title">
+        <button class="absolute inset-0 modal-overlay" onclick="document.getElementById('alert-close').click()" aria-label="Close alert"></button>
         <div class="glass-effect rounded-3xl shadow-2xl max-w-md w-full p-8 transform transition-all card-hover">
             <div class="flex items-center mb-6">
                 <div class="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 rounded-full mr-4 shadow-lg">
