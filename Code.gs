@@ -526,7 +526,8 @@ function updateRecordById(recordId, updatedRow) {
     dataWithTimestamp[16] = new Date(); 
 
     // Perform the update
-    sheet.getRange(sheetRow, 1, 1, 17).setValues([dataWithTimestamp]);
+    sheet.getRange(sheetRow, 1, 1, 15).setValues([dataWithTimestamp.slice(0, 15)]);
+    sheet.getRange(sheetRow, 17, 1, 1).setValues([[dataWithTimestamp[16]]]);
 
     return JSON.stringify({ success: true, message: "Record updated successfully" });
 
