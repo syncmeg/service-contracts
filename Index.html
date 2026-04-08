@@ -29,8 +29,8 @@
         .modal-overlay { background: rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
         select[name="position"] { min-width: 0; text-overflow: ellipsis; }
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
@@ -75,12 +75,12 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
         .badge-success {
-            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-            color: #065f46;
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            color: white;
         }
         .badge-warning {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #92400e;
+            background: linear-gradient(135deg, #92400e 0%, #78350f 100%);
+            color: white;
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -335,11 +335,11 @@
                     </div>
                     <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                         <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200">
-                            <i class="fas fa-calendar-day text-gray-400 text-sm"></i>
+                            <i class="fas fa-calendar-day text-gray-600 text-sm"></i>
                             <input type="date" id="dateFrom" placeholder="From" class="text-sm outline-none bg-transparent" onchange="handleDateChange()" aria-label="Date from filter">
                         </div>
                         <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200">
-                            <i class="fas fa-calendar-check text-gray-400 text-sm"></i>
+                            <i class="fas fa-calendar-check text-gray-600 text-sm"></i>
                             <input type="date" id="dateTo" placeholder="To" class="text-sm outline-none bg-transparent" onchange="handleDateChange()" aria-label="Date to filter">
                         </div>
                         <button onclick="resetDateRangeFilter()" class="glass-effect border border-white/20 hover:bg-white/90 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 text-sm" aria-label="Reset date range filter" type="button">
@@ -368,7 +368,7 @@
                         <p id="projectsCount" class="text-3xl font-bold text-blue-700">-</p>
                     </div>
                 </div>
-                <div class="flex items-center text-sm text-gray-500">
+                <div class="flex items-center text-sm text-gray-600">
                     <i class="fas fa-chart-line mr-2"></i>
                     <span>Active service contracts</span>
                 </div>
@@ -383,7 +383,7 @@
                         <p id="personnelCount" class="text-3xl font-bold text-green-700">-</p>
                     </div>
                 </div>
-                <div class="flex items-center text-sm text-gray-500">
+                <div class="flex items-center text-sm text-gray-600">
                     <i class="fas fa-user-tie mr-2"></i>
                     <span>Staff members</span>
                 </div>
@@ -398,7 +398,7 @@
                         <p id="recentActivityCount" class="text-3xl font-bold text-purple-700">-</p>
                     </div>
                 </div>
-                <div class="flex items-center text-sm text-gray-500">
+                <div class="flex items-center text-sm text-gray-600">
                     <i class="fas fa-calendar-day mr-2"></i>
                     <span>Last 7 days</span>
                 </div>
@@ -417,7 +417,7 @@
                       <h3 id="formModalTitle" class="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Create New Entries</h3>
                   </div>
               </div>
-              <button onclick="closeModal('formModal')" class="text-gray-400 hover:text-red-500 text-2xl ml-4 transition-colors hover:rotate-90 transform duration-300" aria-label="Close form modal" type="button">
+              <button onclick="closeModal('formModal')" class="text-gray-600 hover:text-red-500 text-2xl ml-4 transition-colors hover:rotate-90 transform duration-300" aria-label="Close form modal" type="button">
                   <i class="fas fa-times"></i>
               </button>
             </div>
@@ -428,7 +428,7 @@
                         <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
                     </div>
                     <h4 class="text-lg font-semibold text-gray-700 mb-2">Loading Form Data</h4>
-                    <p class="text-sm text-gray-500">Please wait while we prepare the form...</p>
+                    <p class="text-sm text-gray-600">Please wait while we prepare the form...</p>
                 </div>
                 
                 <div id="formContent" class="space-y-6">
@@ -547,17 +547,17 @@
                       </div>
                       <h3 id="tableModalTitle" class="text-2xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Database Records</h3>
                   </div>
-                  <button onclick="closeModal('tableModal')" class="text-gray-400 hover:text-red-500 text-2xl transition-colors hover:rotate-90 transform duration-300" aria-label="Close table modal" type="button">
+                  <button onclick="closeModal('tableModal')" class="text-gray-600 hover:text-red-500 text-2xl transition-colors hover:rotate-90 transform duration-300" aria-label="Close table modal" type="button">
                       <i class="fas fa-times"></i>
                   </button>
               </div>
               <div class="flex gap-3 items-center">
                   <div class="relative flex-1">
                       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="fas fa-search text-gray-400"></i>
+                          <i class="fas fa-search text-gray-600"></i>
                       </div>
                       <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Search records..." class="w-full pl-10 pr-10 py-2 input-modern rounded-lg outline-none" aria-label="Search records">
-                      <button type="button" onclick="clearTableSearch()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors" aria-label="Clear search">
+                      <button type="button" onclick="clearTableSearch()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-gray-800 transition-colors" aria-label="Clear search">
                           <i class="fas fa-times-circle"></i>
                       </button>
                   </div>
@@ -2068,7 +2068,7 @@
         }
 
         // Show loading indicator
-        tbody.innerHTML = '<tr><td colspan="12" class="p-10 text-center text-gray-500"><div class="inline-flex gap-1"><div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0ms"></div><div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 150ms"></div><div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 300ms"></div></div></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="p-10 text-center text-gray-600"><div class="inline-flex gap-1"><div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0ms"></div><div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 150ms"></div><div class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 300ms"></div></div></td></tr>';
 
         // Load positions first (if not already loaded)
         if (dynamicPositions.length === 0) {
@@ -2480,8 +2480,8 @@
               <i class="fas fa-edit"></i> Edit
             </button>
           </td>
-          <td class="px-4 py-2 text-sm text-gray-400 font-mono">${escapeHtml(record[13] || '-')}</td>
-          <td class="px-4 py-2 text-sm text-gray-500" style="display:none;">${escapeHtml(record[13])}</td>
+          <td class="px-4 py-2 text-sm text-gray-600 font-mono">${escapeHtml(record[13] || '-')}</td>
+          <td class="px-4 py-2 text-sm text-gray-600" style="display:none;">${escapeHtml(record[13])}</td>
           <td class="px-4 py-2 text-sm">
               <div class="font-medium text-gray-900" data-field="name" data-row="${originalRowIndex}">${escapeHtml((record[3] || '').toUpperCase())}${record[4] ? ' ' + escapeHtml((record[4][0] || '').toUpperCase()) + '.' : ''} ${escapeHtml((record[2] || '').toUpperCase())}${record[5] ? ' ' + escapeHtml((record[5] || '').toUpperCase()) : ''}</div>
           </td>
@@ -2490,8 +2490,8 @@
           <td class="px-4 py-2 text-sm" data-field="position" data-row="${originalRowIndex}"><span class="bg-gray-100 px-2 py-1 rounded text-xs font-bold text-gray-600">${escapeHtml(record[7])}</span></td>
           <td class="px-4 py-2 text-sm font-mono text-green-600" data-field="salary" data-row="${originalRowIndex}">₱${Number(record[8] || 0).toLocaleString()}</td>
           <td class="px-4 py-2 text-sm text-blue-500 underline" data-field="email" data-row="${originalRowIndex}">${escapeHtml((record[9] || '').toLowerCase())}</td>
-          <td class="px-4 py-2 text-xs text-gray-500">${escapeHtml(trainingDates)}</td>
-          <td class="px-4 py-2 text-xs text-gray-500">${escapeHtml(startStr)} - ${escapeHtml(endStr)}</td>
+          <td class="px-4 py-2 text-xs text-gray-600">${escapeHtml(trainingDates)}</td>
+          <td class="px-4 py-2 text-xs text-gray-600">${escapeHtml(startStr)} - ${escapeHtml(endStr)}</td>
         `;
       }
       
@@ -2637,7 +2637,7 @@
           <td class="py-3 px-2 w-40">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-peso-sign text-gray-400 text-sm"></i>
+                    <i class="fas fa-peso-sign text-gray-600 text-sm"></i>
                 </div>
                 <input type="number" name="salary" placeholder="0.00" value="${escapeAttribute(record[8] || '')}" class="p-3 pl-8 text-sm input-modern rounded-lg w-full text-right" aria-label="Salary">
             </div>
@@ -2645,7 +2645,7 @@
           <td class="py-3 px-2">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-envelope text-gray-400 text-sm"></i>
+                    <i class="fas fa-envelope text-gray-600 text-sm"></i>
                 </div>
                 <input type="email" name="email" placeholder="email@example.com" value="${escapeAttribute(record[9] || '')}" class="p-3 pl-10 text-sm input-modern rounded-lg w-full" aria-label="Email address">
             </div>
@@ -2737,8 +2737,8 @@ function renderTable() {
                   <i class="fas fa-edit"></i> Edit
                 </button>
               </td>
-              <td class="px-4 py-2 text-sm text-gray-400 font-mono">${escapeHtml(row[13] || '-')}</td>
-              <td class="px-4 py-2 text-sm text-gray-500" style="display:none;">${escapeHtml(row[13])}</td>
+              <td class="px-4 py-2 text-sm text-gray-600 font-mono">${escapeHtml(row[13] || '-')}</td>
+              <td class="px-4 py-2 text-sm text-gray-600" style="display:none;">${escapeHtml(row[13])}</td>
               <td class="px-4 py-2 text-sm">
                   <div class="font-medium text-gray-900" data-field="name" data-row="${row[0] - 1}">${escapeHtml((row[3] || '').toUpperCase())}${row[4] ? ' ' + escapeHtml((row[4][0] || '').toUpperCase()) + '.' : ''} ${escapeHtml((row[2] || '').toUpperCase())}${row[5] ? ' ' + escapeHtml((row[5] || '').toUpperCase()) : ''}</div>
               </td>
@@ -2747,8 +2747,8 @@ function renderTable() {
               <td class="px-4 py-2 text-sm" data-field="position" data-row="${row[0] - 1}"><span class="bg-gray-100 px-2 py-1 rounded text-xs font-bold text-gray-600">${escapeHtml(row[7])}</span></td>
               <td class="px-4 py-2 text-sm font-mono text-green-600" data-field="salary" data-row="${row[0] - 1}">₱${Number(row[8] || 0).toLocaleString()}</td>
               <td class="px-4 py-2 text-sm text-blue-500 underline" data-field="email" data-row="${row[0] - 1}">${escapeHtml((row[9] || '').toLowerCase())}</td>
-              <td class="px-4 py-2 text-xs text-gray-500">${escapeHtml(trainingDates)}</td>
-              <td class="px-4 py-2 text-xs text-gray-500">${escapeHtml(startStr)} - ${escapeHtml(endStr)}</td>
+              <td class="px-4 py-2 text-xs text-gray-600">${escapeHtml(trainingDates)}</td>
+              <td class="px-4 py-2 text-xs text-gray-600">${escapeHtml(startStr)} - ${escapeHtml(endStr)}</td>
             `;
             tbody.appendChild(tr);
           }
@@ -2848,7 +2848,7 @@ function renderTable() {
           <td class="py-2 px-1 w-32">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                    <i class="fas fa-peso-sign text-gray-400 text-xs"></i>
+                    <i class="fas fa-peso-sign text-gray-600 text-xs"></i>
                 </div>
                 <input type="number" name="salary" placeholder="0.00" class="p-2 pl-6 text-xs input-modern rounded w-full text-right" aria-label="Salary">
             </div>
@@ -2856,7 +2856,7 @@ function renderTable() {
           <td class="py-2 px-1">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                    <i class="fas fa-envelope text-gray-400 text-xs"></i>
+                    <i class="fas fa-envelope text-gray-600 text-xs"></i>
                 </div>
                 <input type="email" name="email" placeholder="email@example.com" class="p-2 pl-8 text-xs input-modern rounded w-full" aria-label="Email address">
             </div>
@@ -3272,14 +3272,14 @@ function renderTable() {
             }
             
             .error-item {
-              color: #374151;
+              color: #1f2937;
               font-size: 13px;
               line-height: 1.4;
               margin-bottom: 6px;
               padding: 8px 12px;
               border-radius: 4px;
-              border-left: 3px solid #fca5a5;
-              background-color: #fef2f2;
+              border-left: 3px solid #dc2626;
+              background-color: #fee2e2;
               position: relative;
             }
             
@@ -3318,7 +3318,7 @@ function renderTable() {
             }
             
             .row-errors {
-              color: #374151;
+              color: #1f2937;
               font-size: 11px;
               line-height: 1.3;
               padding-left: 12px;
@@ -3341,12 +3341,12 @@ function renderTable() {
             }
             
             .validation-error-container::-webkit-scrollbar-thumb {
-              background: #cbd5e1;
+              background: #94a3b8;
               border-radius: 3px;
             }
             
             .validation-error-container::-webkit-scrollbar-thumb:hover {
-              background: #94a3b8;
+              background: #64748b;
             }
           `;
           document.head.appendChild(styles);
