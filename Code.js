@@ -132,7 +132,7 @@ function validateRecordNumber(recordNumber) {
 
 function extractYearFromRecord(recordNumber) {
   if (!recordNumber || typeof recordNumber !== 'string') return null;
-  const match = recordNumber.match(YEAR_AGNOSTIC_PATTERN);
+  const match = YEAR_AGNOSTIC_PATTERN.exec(recordNumber);
   return match ? match[1] : null;
 }
 
@@ -696,22 +696,18 @@ function aggregateStats(data, fromDate, toDate, sevenDaysAgo) {
 }
 
 function getDashboardStats(dateFrom, dateTo) {
-  try {
-    const sheet = getDataSheet();
-    const data = getSheetData(sheet);
-    
-    if (!data) {
-      return getEmptyStats();
-    }
-    
-    const { fromDate, toDate } = createDateRange(dateFrom, dateTo);
-    const sevenDaysAgo = getSevenDaysAgo();
-    const stats = aggregateStats(data, fromDate, toDate, sevenDaysAgo);
-    
-    return stats;
-  } catch (error) {
-    throw error;
+  const sheet = getDataSheet();
+  const data = getSheetData(sheet);
+  
+  if (!data) {
+    return getEmptyStats();
   }
+  
+  const { fromDate, toDate } = createDateRange(dateFrom, dateTo);
+  const sevenDaysAgo = getSevenDaysAgo();
+  const stats = aggregateStats(data, fromDate, toDate, sevenDaysAgo);
+  
+  return stats;
 }
 
 
