@@ -3761,12 +3761,6 @@ function renderTable() {
             categories[category].push({ name: key, values: metrics[key] });
           });
           
-          // Show slowest operations
-          const allOps = Object.entries(metrics).flatMap(([name, values]) => 
-            values.map(v => ({ name, duration: v }))
-          );
-          const slowest = allOps.sort((a, b) => b.duration - a.duration).slice(0, 5);
-          
           // Performance recommendations
           this.showRecommendations(metrics);
         }

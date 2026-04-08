@@ -89,11 +89,11 @@ function sortRecordNumbers(recordNumbers) {
       
       if (baseA !== baseB) {
         return baseB - baseA;
-      } else {
-        const countA = matchA[3] ? Number.parseInt(matchA[3]) : 1;
-        const countB = matchB[3] ? Number.parseInt(matchB[3]) : 1;
-        return countB - countA;
       }
+      
+      const countA = matchA[3] ? Number.parseInt(matchA[3]) : 1;
+      const countB = matchB[3] ? Number.parseInt(matchB[3]) : 1;
+      return countB - countA;
     }
     return 0;
   });
