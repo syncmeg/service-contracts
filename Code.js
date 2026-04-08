@@ -604,62 +604,116 @@ function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
+function getEmptyStats() {
+  return { projects: 0, personnel: 0, recentActivity: 0 };
+}
+
+function getDataSheet() {
+  const sheet = ss.getSheetByName('Data');
+  if (!sheet) {
+    throw new Error("Data sheet not found");
+  }
+  return sheet;
+}
+
+function getSheetData(sheet) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) {
+    return null;
+  }
+  return sheet.getRange(2, 1, lastRow - 1, 10).getValues();
+}
+
+function createDateRange(dateFrom, dateTo) {
+  if (!dateFrom || !dateTo) {
+    return { fromDate: null, toDate: null };
+  }
+  
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+  toDate.setHours(23, 59, 59, 999);
+  
+  return { fromDate, toDate };
+}
+
+function getSevenDaysAgo() {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+  return sevenDaysAgo;
+}
+
+function parseRecordDate(dateValue) {
+  return dateValue instanceof Date ? dateValue : new Date(dateValue);
+}
+
+function isDateInRange(recordDate, fromDate, toDate) {
+  if (!fromDate || !toDate || !recordDate) {
+    return true;
+  }
+  return recordDate >= fromDate && recordDate <= toDate;
+}
+
+function processDataRow(row, fromDate, toDate, sevenDaysAgo) {
+  const recordDate = parseRecordDate(row[0]);
+  
+  if (!isDateInRange(recordDate, fromDate, toDate)) {
+    return { project: null, incrementPersonnel: false, incrementRecent: false };
+  }
+  
+  return {
+    project: row[9] || null,
+    incrementPersonnel: !!row[1],
+    incrementRecent: recordDate && recordDate >= sevenDaysAgo
+  };
+}
+
+function aggregateStats(data, fromDate, toDate, sevenDaysAgo) {
+  const projects = new Set();
+  let personnelCount = 0;
+  let recentActivityCount = 0;
+  
+  for (const row of data) {
+    const result = processDataRow(row, fromDate, toDate, sevenDaysAgo);
+    
+    if (result.project) {
+      projects.add(result.project);
+    }
+    
+    if (result.incrementPersonnel) {
+      personnelCount++;
+    }
+    
+    if (result.incrementRecent) {
+      recentActivityCount++;
+    }
+  }
+  
+  return {
+    projects: projects.size,
+    personnel: personnelCount,
+    recentActivity: recentActivityCount
+  };
+}
+
 function getDashboardStats(dateFrom, dateTo) {
   try {
     const startTime = Date.now();
-    const sheet = ss.getSheetByName('Data');
-    if (!sheet) {
-      return { projects: 0, personnel: 0, recentActivity: 0 };
-    }
-
-    const lastRow = sheet.getLastRow();
-    if (lastRow <= 1) {
-      return { projects: 0, personnel: 0, recentActivity: 0 };
-    }
-
-    const data = sheet.getRange(2, 1, lastRow - 1, 10).getValues(); // Columns A-J only
     
-    const projects = new Set();
-    let personnelCount = 0;
-    let recentActivityCount = 0;
+    const sheet = getDataSheet();
+    const data = getSheetData(sheet);
     
-    let fromDate = null;
-    let toDate = null;
-    
-    if (dateFrom && dateTo) {
-      fromDate = new Date(dateFrom);
-      toDate = new Date(dateTo);
-      toDate.setHours(23, 59, 59, 999);
+    if (!data) {
+      return getEmptyStats();
     }
     
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    sevenDaysAgo.setHours(0, 0, 0, 0);
-    
-    for (let i = 0; i < data.length; i++) {
-      const row = data[i];
-      const recordDate = row[0] instanceof Date ? row[0] : new Date(row[0]);
-      
-      if (fromDate && toDate && recordDate) {
-        if (recordDate < fromDate || recordDate > toDate) continue;
-      }
-      
-      if (row[9]) projects.add(row[9]);
-      
-      if (row[1]) personnelCount++;
-      
-      if (recordDate && recordDate >= sevenDaysAgo) {
-        recentActivityCount++;
-      }
-    }
+    const { fromDate, toDate } = createDateRange(dateFrom, dateTo);
+    const sevenDaysAgo = getSevenDaysAgo();
+    const stats = aggregateStats(data, fromDate, toDate, sevenDaysAgo);
     
     const duration = Date.now() - startTime;
     
-    return {
-      projects: projects.size,
-      personnel: personnelCount,
-      recentActivity: recentActivityCount
-    };
+    return stats;
   } catch (error) {
     throw error;
   }
