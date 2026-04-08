@@ -26,7 +26,7 @@
     ></script>
     <style>
         .hidden { display: none; }
-        .modal-overlay { background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); }
+        .modal-overlay { background: rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -120,6 +120,177 @@
             background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
             transform: scale(1.01);
             transition: all 0.2s ease;
+        }
+        /* ===== MICRO-INTERACTIONS ===== */
+        /* SMOOTH TRANSITIONS - 300-400ms easing */
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .transition-smooth-fast {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .transition-smooth-slow {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* BUTTON PRESS FEEDBACK - Shrink on active */
+        button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button:active:not(:disabled) {
+            filter: brightness(0.95);
+        }
+        .btn-primary:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+        }
+        .btn-secondary:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        /* LOADING SKELETONS - Sophisticated shimmer animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 0.5rem;
+        }
+        .skeleton-text {
+            height: 1rem;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        .skeleton-text-short {
+            height: 1rem;
+            width: 60%;
+        }
+        .skeleton-card {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background: white;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .skeleton-table-row {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .skeleton-table-cell {
+            height: 1.5rem;
+            flex: 1;
+            border-radius: 0.5rem;
+        }
+        .skeleton-table-cell:first-child {
+            flex: 0 0 10%;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* TOAST NOTIFICATIONS - Enhanced styling */
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 300px;
+            max-width: 500px;
+        }
+        .toast.exit {
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .toast-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%);
+            color: white;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .toast-error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%);
+            color: white;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .toast-info {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%);
+            color: white;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        .toast-warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(217, 119, 6, 0.95) 100%);
+            color: white;
+            border: 1px solid rgba(253, 224, 71, 0.3);
+        }
+        .toast-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .toast-message {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .toast-close {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+            padding: 0;
+            margin-left: 0.5rem;
+        }
+        .toast-close:hover {
+            opacity: 1;
+        }
+        /* Multiple Toast Stacking */
+        .toast:nth-of-type(1) { top: 1rem; }
+        .toast:nth-of-type(2) { top: calc(1rem + 80px); }
+        .toast:nth-of-type(3) { top: calc(1rem + 160px); }
+        .toast:nth-of-type(4) { top: calc(1rem + 240px); }
+        /* Loading Indicator - Smooth spinner */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            display: inline-block;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .spinner-sm {
+            width: 0.75rem;
+            height: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
         }
     </style>
 </head>
@@ -2324,40 +2495,81 @@
         `;
       }
       
-      function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        let notificationClass;
-        if (type === 'success') {
-          notificationClass = 'bg-green-500 text-white';
-        } else if (type === 'error') {
-          notificationClass = 'bg-red-500 text-white';
-        } else {
-          notificationClass = 'bg-blue-500 text-white';
-        }
+      function showNotification(message, type = 'info', duration = 4000) {
+        const toast = document.createElement('div');
         
-        let iconClass;
-        if (type === 'success') {
-          iconClass = 'check-circle';
-        } else if (type === 'error') {
-          iconClass = 'exclamation-circle';
-        } else {
-          iconClass = 'info-circle';
-        }
+        // Map type to toast class and icon
+        const typeConfig = {
+          success: { class: 'toast-success', icon: 'check-circle' },
+          error: { class: 'toast-error', icon: 'exclamation-circle' },
+          warning: { class: 'toast-warning', icon: 'exclamation-triangle' },
+          info: { class: 'toast-info', icon: 'info-circle' }
+        };
         
-        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all transform ${notificationClass}`;
-        notification.innerHTML = `
-          <div class="flex items-center gap-2">
-            <i class="fas fa-${iconClass}"></i>
-            <span>${message}</span>
-          </div>
+        const config = typeConfig[type] || typeConfig.info;
+        
+        toast.className = `toast ${config.class}`;
+        toast.innerHTML = `
+          <i class="fas fa-${config.icon} toast-icon"></i>
+          <span class="toast-message">${escapeHtml(message)}</span>
+          <button class="toast-close" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+          </button>
         `;
         
-        document.body.appendChild(notification);
+        document.body.appendChild(toast);
         
+        // Auto-dismiss after duration
+        const dismissTimeout = setTimeout(() => {
+          dismissToast(toast);
+        }, duration);
+        
+        // Remove from timeout list when manually closed
+        toast.addEventListener('click', (e) => {
+          if (e.target.closest('.toast-close')) {
+            clearTimeout(dismissTimeout);
+          }
+        });
+        
+        return toast;
+      }
+      
+      function dismissToast(toastElement) {
+        if (!toastElement || !document.body.contains(toastElement)) return;
+        toastElement.classList.add('exit');
         setTimeout(() => {
-          notification.style.opacity = '0';
-          setTimeout(() => notification.remove(), 300);
-        }, 3000);
+          if (document.body.contains(toastElement)) {
+            toastElement.remove();
+          }
+        }, 300);
+      }
+      
+      function showSkeletonLoader(containerId, rowCount = 5) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        let skeletonHTML = '';
+        for (let i = 0; i < rowCount; i++) {
+          skeletonHTML += `
+            <div class="skeleton-table-row">
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 10%;"></div>
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 15%;"></div>
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 20%;"></div>
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 15%;"></div>
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 12%;"></div>
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 10%;"></div>
+              <div class="skeleton skeleton-table-cell" style="flex: 0 0 18%;"></div>
+            </div>
+          `;
+        }
+        container.innerHTML = skeletonHTML;
+      }
+      
+      function hideSkeletonLoader(containerId) {
+        const container = document.getElementById(containerId);
+        if (container) {
+          container.innerHTML = '';
+        }
       }
       
       function editRecord(rowIndex) {
