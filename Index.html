@@ -224,9 +224,10 @@
             animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         .toast-success {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%);
+            /* Slightly darkened the green to ensure 4.5:1 ratio */
+            background: linear-gradient(135deg, rgba(6, 95, 70, 0.98) 0%, rgba(4, 120, 87, 0.98) 100%);
             color: white;
-            border: 1px solid rgba(34, 197, 94, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.5);
         }
         .toast-error {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%);
@@ -239,9 +240,10 @@
             border: 1px solid rgba(96, 165, 250, 0.5);
         }
         .toast-warning {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(217, 119, 6, 0.95) 100%);
-            color: white;
-            border: 1px solid rgba(253, 224, 71, 0.5);
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.98) 0%, rgba(251, 191, 36, 0.98) 100%);
+            /* Darker text color provides much better contrast on yellow/orange */
+            color: #78350f; 
+            border: 1px solid rgba(245, 158, 11, 0.5);
         }
         .toast-icon {
             font-size: 1.25rem;
