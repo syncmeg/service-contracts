@@ -1409,8 +1409,6 @@
               return searchTerms.every(term => rowText.includes(term));
             });
           }
-          const uniqueProjects = [...new Set(baseRecords.map(r => r[10] || '').filter(Boolean))];
-          const uniquePositions = [...new Set(baseRecords.map(r => r[7] || '').filter(Boolean))];
           
           const filteredResults = baseRecords.filter(record => {
             if (selectedProjects.length > 0) {
@@ -3763,26 +3761,11 @@ function renderTable() {
             categories[category].push({ name: key, values: metrics[key] });
           });
           
-          // Display metrics by category
-          Object.entries(categories).forEach(([category, operations]) => {
-            operations.forEach(op => {
-              const values = op.values;
-              const avg = values.reduce((a, b) => a + b, 0) / values.length;
-              const min = Math.min(...values);
-              const max = Math.max(...values);
-              const count = values.length;
-              
-            });
-          });
-          
           // Show slowest operations
           const allOps = Object.entries(metrics).flatMap(([name, values]) => 
             values.map(v => ({ name, duration: v }))
           );
           const slowest = allOps.sort((a, b) => b.duration - a.duration).slice(0, 5);
-          
-          slowest.forEach((op, index) => {
-          });
           
           // Performance recommendations
           this.showRecommendations(metrics);
