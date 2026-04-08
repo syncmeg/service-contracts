@@ -44,15 +44,11 @@ const COLUMN_INDICES = {
 };
 
 function readSheetData(sheetName) {
-  try {
-    const sheet = ss.getSheetByName(sheetName);
-    if (!sheet) {
-      return null;
-    }
-    return sheet.getDataRange().getValues();
-  } catch (error) {
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
     return null;
   }
+  return sheet.getDataRange().getValues();
 }
 
 function filterRowsByProject(data, projectName) {
@@ -312,76 +308,105 @@ function getProjectList() {
   }
 }
 
+function validatePayload(payload) {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error("Invalid payload: Data must be an object.");
+  }
+}
+
+function getValidationSchema() {
+  return {
+    name:     { type: 'string', max: 100, required: true },
+    category: { type: 'string', max: 50,  required: true },
+    amount:   { type: 'number', min: 0,    required: true },
+    user:     { type: 'string', max: 50,  required: true }
+  };
+}
+
+function validateRequiredField(key, value, rules) {
+  if (rules.required && (value === undefined || value === null || value === '')) {
+    throw new Error(`Missing required field: ${key}`);
+  }
+}
+
+function sanitizeNumberValue(value, key, rules) {
+  const parsedValue = Number.parseFloat(value);
+  if (isNaN(parsedValue)) throw new Error(`Field ${key} must be a number.`);
+  if (rules.min !== undefined && parsedValue < rules.min) {
+    throw new Error(`${key} below minimum.`);
+  }
+  return parsedValue;
+}
+
+function sanitizeStringValue(value) {
+  const sanitized = String(value).trim();
+  
+  // Prevent Spreadsheet Injection
+  if (sanitized.startsWith('=') || sanitized.startsWith('+') || 
+      sanitized.startsWith('-') || sanitized.startsWith('@')) {
+    return "'" + sanitized;
+  }
+  
+  return sanitized;
+}
+
+function applyLengthLimit(value, maxLength) {
+  return value.length > maxLength ? value.substring(0, maxLength) : value;
+}
+
+function processField(key, value, rules) {
+  validateRequiredField(key, value, rules);
+  
+  if (rules.type === 'number') {
+    return sanitizeNumberValue(value, key, rules);
+  }
+  
+  if (rules.type === 'string') {
+    const sanitized = sanitizeStringValue(value);
+    return applyLengthLimit(sanitized, rules.max);
+  }
+  
+  return value;
+}
+
+function sanitizePayload(payload, schema) {
+  const sanitizedData = {};
+  
+  for (const key in schema) {
+    sanitizedData[key] = processField(key, payload[key], schema[key]);
+  }
+  
+  return sanitizedData;
+}
+
+function writeToSheet(sanitizedData) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Data');
+  if (!sheet) throw new Error("Target sheet 'Data' not found.");
+
+  const row = [
+    new Date(), 
+    sanitizedData.name, 
+    sanitizedData.category, 
+    sanitizedData.amount, 
+    sanitizedData.user
+  ];
+
+  sheet.appendRow(row);
+}
+
 /**
  * Submits validated and sanitized data to the Google Sheet.
  * Addresses: Validation, Sanitization, Type Checking, and Length Limits.
  */
 function submitData(payload) {
   try {
-    // 1. Basic Payload Validation
-    if (!payload || typeof payload !== 'object') {
-      throw new Error("Invalid payload: Data must be an object.");
-    }
-
-    // 2. Define Schema and Constraints
-    const schema = {
-      name:     { type: 'string', max: 100, required: true },
-      category: { type: 'string', max: 50,  required: true },
-      amount:   { type: 'number', min: 0,    required: true },
-      user:     { type: 'string', max: 50,  required: true }
-    };
-
-    const sanitizedData = {};
-
-    // 3. Type Checking, Length Limits, and Sanitization
-    for (const key in schema) {
-      const rules = schema[key];
-      let value = payload[key];
-
-      // Check existence
-      if (rules.required && (value === undefined || value === null || value === '')) {
-        throw new Error(`Missing required field: ${key}`);
-      }
-
-      // Type Enforcement
-      if (rules.type === 'number') {
-        value = Number.parseFloat(value);
-        if (isNaN(value)) throw new Error(`Field ${key} must be a number.`);
-        if (rules.min !== undefined && value < rules.min) throw new Error(`${key} below minimum.`);
-      } else if (rules.type === 'string') {
-        // Basic Sanitization: Trim and escape potential formula injection
-        value = String(value).trim();
-        
-        // Prevent Spreadsheet Injection (Excel/Sheets commands starting with =, +, -, @)
-        if (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@')) {
-          value = "'" + value; // Prepend apostrophe to treat as literal text
-        }
-
-        // Length Limits
-        if (value.length > rules.max) {
-          value = value.substring(0, rules.max);
-        }
-      }
-      
-      sanitizedData[key] = value;
-    }
-
-    // 4. Execution
-    const ss = SpreadsheetApp.getActiveSpreadsheet(); // Ensure ss is defined
-    const sheet = ss.getSheetByName('Data');
-    if (!sheet) throw new Error("Target sheet 'Data' not found.");
-
-    const row = [
-      new Date(), 
-      sanitizedData.name, 
-      sanitizedData.category, 
-      sanitizedData.amount, 
-      sanitizedData.user
-    ];
-
-    sheet.appendRow(row);
+    validatePayload(payload);
+    const schema = getValidationSchema();
+    const sanitizedData = sanitizePayload(payload, schema);
+    writeToSheet(sanitizedData);
+    
     return { success: true };
-
   } catch (e) {
     console.error(`Submission Error: ${e.message}`);
     return { success: false, error: e.message };
