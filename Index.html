@@ -753,8 +753,7 @@
           const result = fn();
           const duration = performance.now() - start;
           
-          console.log(` ${operationName} took ${duration.toFixed(2)}ms`);
-          this.reportMetric(operationName, duration);
+                    this.reportMetric(operationName, duration);
           
           return result;
         }
@@ -763,13 +762,11 @@
           const start = performance.now();
           return fn().then(result => {
             const duration = performance.now() - start;
-            console.log(` ${operationName} took ${duration.toFixed(2)}ms`);
-            this.reportMetric(operationName, duration);
+                        this.reportMetric(operationName, duration);
             return result;
           }).catch(error => {
             const duration = performance.now() - start;
-            console.log(` ${operationName} failed after ${duration.toFixed(2)}ms`);
-            this.reportMetric(operationName + '_failed', duration);
+                        this.reportMetric(operationName + '_failed', duration);
             throw error;
           });
         }
@@ -793,7 +790,6 @@
           return new Promise((resolve, reject) => {
             google.script.run
               .withSuccessHandler(result => {
-                console.log(` ${functionName} succeeded`);
                 resolve(result);
               })
               .withFailureHandler(error => {
@@ -972,7 +968,6 @@
           }
           
           current[keys[keys.length - 1]] = value;
-          console.log(` State updated: ${path} =`, value);
         },
         
         getState(path) {
@@ -1032,7 +1027,6 @@
         return date.toLocaleDateString('en-GB', options);
       }
       document.addEventListener('DOMContentLoaded', function() {
-        console.log(" Page loaded - attempting to load dashboard stats");
         const projNameInput = document.querySelector('[name="projName"]');
         if (projNameInput) {
           projNameInput.addEventListener('input', function() {
@@ -1049,7 +1043,6 @@
             console.error('Failed to load positions:', error);
           }
         })();
-        console.log(" Auto-loading dashboard stats on page load");
         loadDashboardStats();
       });
 
@@ -1075,7 +1068,6 @@
       }
 
       async function preloadFormData() {
-        console.log(" Preloading form data in background...");
         
         try {
           const [positions, projects, tableData] = await Promise.all([
@@ -1110,14 +1102,12 @@
           await preloadTableFilters();
           
           preloadedFormData.allLoaded = true;
-          console.log(" All form data preloaded successfully");
         } catch (error) {
           console.error(' Error preloading form data:', error);
         }
       }
 
       async function preloadTableFilters() {
-        console.log(" Preloading table filters...");
         
         try {
           const [projects, positions] = await Promise.all([
@@ -1161,7 +1151,6 @@
             }
           ]);
           
-          console.log(" Table filters preloaded");
           preloadedFormData.tableFilters = true;
         } catch (error) {
           console.error(' Error preloading table filters:', error);
@@ -1180,7 +1169,6 @@
           return;
         }
         if (preloadedFormData.positions && preloadedFormData.projects && preloadedFormData.projectNumber) {
-          console.log(" Using preloaded data - instant form display!");
           scheduleUIUpdate(() => {
             document.getElementById('formLoadingIndicator').classList.add('hidden');
             document.getElementById('formContent').classList.remove('hidden');
@@ -1190,7 +1178,6 @@
           return;
         }
         
-        console.log("🔄 Preloading not complete, loading data now...");
         
         try {
           const [positions, projects] = await Promise.all([
@@ -1278,7 +1265,6 @@
           return;
         }
         
-        console.log("📅 Applying date range filter:", { from: dateFrom, to: dateTo });
         const fromDate = new Date(dateFrom).toLocaleDateString();
         const toDate = new Date(dateTo).toLocaleDateString();
         document.getElementById('dateRangeInfo').textContent = 
@@ -1286,7 +1272,6 @@
         google.script.run
           .withSuccessHandler(function(result) {
             if (result.success) {
-              console.log("✅ Report sheet updated with date range");
             } else {
               console.error("❌ Failed to update Report sheet:", result.error);
             }
@@ -1328,7 +1313,6 @@
         document.getElementById('dateRangeInfo').textContent = 
           'Showing all records. Select a date range to filter dashboard statistics.';
         
-        console.log("🔄 Reset date range filter");
         loadDashboardStats();
       }
       let tableFilterPresets = [];
@@ -1344,7 +1328,6 @@
           toggleIcon.classList.add('fa-chevron-up');
           if (document.getElementById('tableProjectFilter').options.length === 0) {
             if (preloadedFormData.tableFilters) {
-              console.log("🚀 Using preloaded table filters - instant filter display!");
             } else {
               initializeTableFilters();
             }
@@ -1357,7 +1340,6 @@
       }
       
       function initializeTableFilters() {
-        console.log("🔧 Initializing table filters...");
         google.script.run
           .withSuccessHandler(function(projects) {
             const projectFilter = document.getElementById('tableProjectFilter');
@@ -1371,7 +1353,6 @@
                 projectFilter.appendChild(option);
               });
             }
-            console.log("✅ Projects loaded for table filter:", projects);
           })
           .withFailureHandler(function(error) {
             console.error('❌ Failed to load projects for table filter:', error);
@@ -1390,7 +1371,6 @@
                 positionFilter.appendChild(option);
               });
             }
-            console.log("✅ Positions loaded for table filter:", positions);
           })
           .withFailureHandler(function(error) {
             console.error('❌ Failed to load positions for table filter:', error);
@@ -1402,21 +1382,11 @@
       }
       
       function applyTableFilters() {
-        console.log("🔍 Applying table filters...");
         
         const selectedProjects = Array.from(document.getElementById('tableProjectFilter').selectedOptions).map(opt => opt.value);
         const selectedPositions = Array.from(document.getElementById('tablePositionFilter').selectedOptions).map(opt => opt.value);
         
         const allRecordsForFiltering = StateManager.getState('records.all');
-        console.log("📋 Selected filters:", {
-          projects: selectedProjects,
-          positions: selectedPositions,
-          allRecordsLength: allRecordsForFiltering ? allRecordsForFiltering.length : 0
-        });
-        console.log("🔍 Detailed filter values:", {
-          selectedProjects: selectedProjects.map(p => `"${p}" (length: ${p.length})`),
-          selectedPositions: selectedPositions.map(p => `"${p}" (length: ${p.length})`)
-        });
         const filterCount = selectedProjects.length + selectedPositions.length;
         document.getElementById('tableFilterCount').textContent = filterCount;
         if (allRecordsForFiltering && allRecordsForFiltering.length > 0) {
@@ -1429,22 +1399,16 @@
               const rowText = row.map(cell => cell ? cell.toString().toUpperCase() : '').join(' ');
               return searchTerms.every(term => rowText.includes(term));
             });
-            console.log("🔍 Applied text search, records after search:", baseRecords.length);
           }
           const uniqueProjects = [...new Set(baseRecords.map(r => r[10] || '').filter(Boolean))];
           const uniquePositions = [...new Set(baseRecords.map(r => r[7] || '').filter(Boolean))];
           
-          console.log("🔍 All unique values in base records:", {
-            projects: uniqueProjects.map(p => `"${p}" (length: ${p.length})`),
-            positions: uniquePositions.map(p => `"${p}" (length: ${p.length})`)
-          });
           const filteredResults = baseRecords.filter(record => {
             if (selectedProjects.length > 0) {
               const recordProject = (record[10] || '').trim();
               const projectMatch = selectedProjects.some(selected => 
                 selected.toLowerCase() === recordProject.toLowerCase()
               );
-              console.log(`🔍 Project check: record="${recordProject}" (len:${recordProject.length}) vs selected=${selectedProjects} -> match=${projectMatch}`);
               if (!projectMatch) {
                 return false;
               }
@@ -1454,7 +1418,6 @@
               const positionMatch = selectedPositions.some(selected => 
                 selected.toLowerCase() === recordPosition.toLowerCase()
               );
-              console.log(`🔍 Position check: record="${recordPosition}" (len:${recordPosition.length}) vs selected=${selectedPositions} -> match=${positionMatch}`);
               if (!positionMatch) {
                 return false;
               }
@@ -1467,15 +1430,7 @@
           StateManager.updateState('records.currentPage', 1);
           renderTable();
           
-          console.log("✅ Table filters applied:", {
-            projects: selectedProjects,
-            positions: selectedPositions,
-            searchText: searchText,
-            recordsFound: filteredResults.length,
-            totalRecords: allRecordsForFiltering ? allRecordsForFiltering.length : 0
-          });
         } else {
-          console.log("❌ No records available for filtering");
         }
       }
       
@@ -1515,7 +1470,6 @@
         currentTablePresetName = preset.name;
         document.getElementById('tableCurrentPreset').textContent = `Preset: ${preset.name}`;
         
-        console.log("✅ Table filter preset saved:", preset);
         alert(`Filter preset "${preset.name}" saved successfully!`);
       }
       
@@ -1576,24 +1530,16 @@
         // Apply the filters
         applyTableFilters();
         
-        console.log("✅ Table filter preset loaded:", preset);
         alert(`Filter preset "${preset.name}" loaded successfully!`);
       }
       
       function resetTableFilters() {
-        console.log("🔄 resetTableFilters() called!");
         
         // Clear all selections
         const projectFilter = document.getElementById('tableProjectFilter');
         const positionFilter = document.getElementById('tablePositionFilter');
         const searchBox = document.getElementById('tableSearch');
         
-        console.log("🔍 Elements found:", {
-          projectFilter: !!projectFilter,
-          positionFilter: !!positionFilter,
-          searchBox: !!searchBox,
-          currentSearchValue: searchBox ? searchBox.value : 'not found'
-        });
         
         if (projectFilter) projectFilter.selectedIndex = -1;
         if (positionFilter) positionFilter.selectedIndex = -1;
@@ -1601,7 +1547,6 @@
         // Clear search box
         if (searchBox) {
           searchBox.value = '';
-          console.log("✅ Search box cleared");
         }
         
         // Reset displays (with null checks)
@@ -1617,16 +1562,12 @@
         // Reset filtered records to all records
         const allRecordsForReset = StateManager.getState('records.all');
         if (allRecordsForReset) {
-          console.log("🔄 Resetting filteredRecords to allRecords:", allRecordsForReset.length);
           StateManager.updateState('records.filtered', [...allRecordsForReset]);
           StateManager.updateState('records.currentPage', 1);
           renderTable();
-          console.log("✅ Table re-rendered with", allRecordsForReset.length, "records");
         } else {
-          console.log("❌ allRecords is undefined");
         }
         
-        console.log("🔄 All table filters reset completed");
       }
       
       function saveTablePresetsToStorage() {
@@ -1642,7 +1583,6 @@
           const saved = localStorage.getItem('tableFilterPresets');
           if (saved) {
             tableFilterPresets = JSON.parse(saved);
-            console.log("✅ Loaded table presets from storage:", tableFilterPresets);
           }
         } catch (error) {
           console.error('❌ Failed to load table presets from localStorage:', error);
@@ -1651,7 +1591,6 @@
 
       // Manual test function - call this from browser console
       function testDashboardStats() {
-        console.log("🧪 Manual dashboard stats test started");
         loadDashboardStats();
       }
       
@@ -1659,12 +1598,10 @@
       async function loadDashboardStats() {
         // Prevent duplicate calls
         if (isLoadingDashboardStats) {
-          console.log("⚠️ Dashboard stats already loading, skipping duplicate call");
           return;
         }
         
         isLoadingDashboardStats = true;
-        console.log("🔄 Loading dashboard stats...");
         
         // Check if Google Apps Script is available
         if (typeof google === 'undefined' || !google.script || !google.script.run) {
@@ -1691,27 +1628,23 @@
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
         
-        console.log("📅 Date range for stats:", { from: dateFrom, to: dateTo });
         
         try {
           // Use enhanced API client with retry mechanism
           const stats = await apiClient.call('getDashboardStats', dateFrom, dateTo);
           
-          console.log("✅ Stats received for dashboard:", stats);
           
           // Update the dashboard cards with the received statistics
           projectsEl.innerText = stats.projects || '0';
           personnelEl.innerText = stats.personnel || '0';
           activityEl.innerText = stats.recentActivity || '0';
           
-          console.log("🎯 Dashboard updated successfully");
           
         } catch (error) {
           console.error('❌ Failed to load dashboard stats:', error);
           showNotification(apiClient.getErrorMessage(error), 'error');
           
           // Fallback to using getData() function
-          console.log("🔄 Trying fallback with getData()...");
           updateDashboardWithFallback();
         } finally {
           isLoadingDashboardStats = false;
@@ -1735,14 +1668,11 @@
         
         google.script.run
           .withSuccessHandler(function(data) {
-            console.log("✅ Fallback data received:", data);
-            console.log("📊 Data length:", data ? data.length : 0);
             
             if (!data || data.length === 0) {
               projectsEl.innerText = '0';
               personnelEl.innerText = '0';
               activityEl.innerText = '0';
-              console.log("📊 No data found - setting all to 0");
               return;
             }
             
@@ -1763,13 +1693,10 @@
               fromDate = new Date(dateFrom);
               toDate = new Date(dateTo);
               toDate.setHours(23, 59, 59, 999);
-              console.log("📅 Fallback using date range:", { from: fromDate, to: toDate });
             } else {
-              console.log("📅 Fallback using all records (no date filter)");
             }
             
             data.forEach((row, index) => {
-              console.log(`📋 Processing row ${index}:`, row);
               
               // Apply date filter if specified
               if (fromDate && toDate && row[0]) {
@@ -1782,33 +1709,24 @@
               // Count projects (column 10, index 9)
               if (row[9]) {
                 projects.add(row[9]);
-                console.log(`📁 Added project: ${row[9]}`);
               }
               
               // Count personnel (column 2, index 1)
               if (row[1]) {
                 personnelCount++;
-                console.log(`👤 Counted personnel: ${row[1]}`);
               }
               
               // Count recent activity (all records in the filtered date range)
               if (row[0]) {
                 recentActivityCount++;
-                console.log(`📅 Activity counted: ${row[0]}`);
               }
             });
             
-            console.log("📊 Final counts:", {
-              projects: projects.size,
-              personnel: personnelCount,
-              recentActivity: recentActivityCount
-            });
             
             projectsEl.innerText = projects.size;
             personnelEl.innerText = personnelCount;
             activityEl.innerText = recentActivityCount;
             
-            console.log("🎯 Dashboard updated with fallback data");
           })
           .withFailureHandler(function(error) {
             console.error('❌ Fallback also failed:', error);
@@ -1821,7 +1739,6 @@
       
       // Export Report function
       function exportReport(format) {
-        console.log(`📄 Exporting Report sheet as ${format}...`);
         
         // Get current date range
         const dateFrom = document.getElementById('dateFrom').value;
@@ -1890,12 +1807,10 @@
         google.script.run
           .withSuccessHandler(function(updateResult) {
             if (updateResult.success) {
-              console.log("✅ Report sheet updated successfully");
               
               // Now read the Report sheet data
               google.script.run
                 .withSuccessHandler(function(reportData) {
-                  console.log("📊 Report sheet response received:", reportData);
                   
                   // Add null check
                   if (!reportData) {
@@ -1906,7 +1821,6 @@
                   }
                   
                   if (reportData.success) {
-                    console.log("✅ Report sheet data read successfully");
                     
                     // Generate Excel file client-side
                     generateExcelFile(reportData, msgEl);
@@ -1939,7 +1853,6 @@
       // Generate Excel file client-side
       function generateExcelFile(reportData, msgEl) {
         try {
-          console.log("🔄 Generating Excel file client-side...");
           
           // Add null checks
           if (!reportData) {
@@ -1996,12 +1909,10 @@
       
       // Generate PDF using backend (fallback)
       function generatePDFFile(msgEl) {
-        console.log("🔄 Using backend for PDF generation...");
         
         google.script.run
           .withSuccessHandler(function(response) {
             if (response.success) {
-              console.log("✅ PDF generated successfully");
               
               // Create download link using URL
               const a = document.createElement('a');
@@ -2048,7 +1959,6 @@
       async function loadTableDataTest() {
         // Prevent duplicate calls
         if (isLoadingTableData) {
-          console.log("⚠️ Table data already loading, skipping duplicate call");
           return;
         }
         
@@ -2062,7 +1972,6 @@
         // Check if data is already preloaded
         const allRecordsForCheck = StateManager.getState('records.all');
         if (preloadedFormData.tableData && allRecordsForCheck && allRecordsForCheck.length > 0) {
-          console.log("🚀 Using preloaded table data - instant table display!");
           StateManager.updateState('records.currentPage', 1);
           renderTable(); // Instant display
           isLoadingTableData = false;
@@ -2093,7 +2002,6 @@
           // Update preloaded data flag for future instant loads
           preloadedFormData.tableData = true;
           
-          console.log("✅ Table data loaded successfully");
           renderTable();
           
         } catch (error) {
@@ -2369,12 +2277,6 @@
         
         const values = extractInlineEditValues(row);
         
-        console.log('🔍 Inline Edit Values:', {
-          ...values,
-          emailLength: values.email.length,
-          hasAt: values.email.includes('@'),
-          hasDot: values.email.includes('.')
-        });
         
         const errors = validateInlineEditData(
           values.firstName, values.lastName, values.project, 
@@ -2402,12 +2304,6 @@
             project: values.project
           };
           
-          console.log('🚀 Calling backend update:', {
-            recordId: record[16],
-            recordLength: record.length,
-            fullRecord: record,
-            updatedRow: updatedRow
-          });
           
           const response = await apiClient.call('updateRecordById', record[16], updatedRow);
           
@@ -3523,7 +3419,6 @@ function renderTable() {
               renderTable();
             }
             
-            console.log('✅ Table data refreshed successfully');
           } catch (error) {
             console.error('❌ Failed to refresh table data:', error);
             showNotification('Failed to refresh table data. Please refresh the page.', 'error');
@@ -3839,12 +3734,9 @@ function renderTable() {
       class PerformanceDashboard {
         static showMetrics() {
           if (!globalThis.performanceMetrics) {
-            console.log('📊 No performance metrics available yet. Try performing some actions first.');
             return;
           }
           
-          console.log('📊 PERFORMANCE METRICS DASHBOARD');
-          console.log('=====================================');
           
           const metrics = globalThis.performanceMetrics;
           const categories = {};
@@ -3868,7 +3760,6 @@ function renderTable() {
           
           // Display metrics by category
           Object.entries(categories).forEach(([category, operations]) => {
-            console.log(`\n🔸 ${category}:`);
             operations.forEach(op => {
               const values = op.values;
               const avg = values.reduce((a, b) => a + b, 0) / values.length;
@@ -3876,11 +3767,6 @@ function renderTable() {
               const max = Math.max(...values);
               const count = values.length;
               
-              console.log(`  ${op.name}:`);
-              console.log(`    Count: ${count}`);
-              console.log(`    Avg: ${avg.toFixed(2)}ms`);
-              console.log(`    Min: ${min.toFixed(2)}ms`);
-              console.log(`    Max: ${max.toFixed(2)}ms`);
             });
           });
           
@@ -3890,9 +3776,7 @@ function renderTable() {
           );
           const slowest = allOps.sort((a, b) => b.duration - a.duration).slice(0, 5);
           
-          console.log('\n🐌 Slowest Operations:');
           slowest.forEach((op, index) => {
-            console.log(`  ${index + 1}. ${op.name}: ${op.duration.toFixed(2)}ms`);
           });
           
           // Performance recommendations
@@ -3900,44 +3784,28 @@ function renderTable() {
         }
         
         static showRecommendations(metrics) {
-          console.log('\n💡 Performance Recommendations:');
-          
           const apiCalls = Object.entries(metrics).filter(([key]) => key.startsWith('api_'));
           const avgApiTime = apiCalls.reduce((sum, [key, values]) => {
             return sum + values.reduce((a, b) => a + b, 0) / values.length;
           }, 0) / apiCalls.length;
           
           if (avgApiTime > 2000) {
-            console.log('  ⚠️  API calls are slow (>2s average). Consider:');
-            console.log('     - Checking network connection');
-            console.log('     - Optimizing backend functions');
-            console.log('     - Implementing better caching');
           }
           
           const filterOps = metrics['filterTable'];
           if (filterOps && filterOps.some(t => t > 500)) {
-            console.log('  ⚠️  Table filtering is slow. Consider:');
-            console.log('     - Implementing virtual scrolling');
-            console.log('     - Adding server-side filtering');
-            console.log('     - Optimizing filter algorithms');
           }
           
           const failedOps = Object.keys(metrics).filter(key => key.includes('_failed'));
           if (failedOps.length > 0) {
-            console.log('  ⚠️  Failed operations detected. Check:');
-            console.log('     - Network connectivity');
-            console.log('     - Server-side errors');
-            console.log('     - API rate limits');
           }
           
           if (avgApiTime < 500 && failedOps.length === 0) {
-            console.log('  ✅ Performance looks good!');
           }
         }
         
         static clearMetrics() {
           globalThis.performanceMetrics = {};
-          console.log('📊 Performance metrics cleared');
         }
       }
       
@@ -3945,9 +3813,6 @@ function renderTable() {
       globalThis.PerformanceDashboard = PerformanceDashboard;
       
       // Add console command help
-      console.log('🔧 Performance monitoring commands:');
-      console.log('  PerformanceDashboard.showMetrics() - Show performance dashboard');
-      console.log('  PerformanceDashboard.clearMetrics() - Clear all metrics');
 
 function countUniqueCurrentYearColumn10() {
         const currentYear = new Date().getFullYear().toString();
@@ -4094,12 +3959,10 @@ function clearForm() {
       }
 
       async function handleAction(msg, title) {
-        console.log("Action started...");
 
         // The code will wait here until "OK" is clicked
         await showAlert(msg, title);
 
-        console.log("User clicked OK. Action resumed.");
       }
     </script>
 
