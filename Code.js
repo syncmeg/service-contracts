@@ -142,8 +142,7 @@ function isCurrentYearRecord(recordNumber) {
 }
 
 function getProjectRecordInfo(projectName) {
-  try {
-    if (!isValidProjectName(projectName)) {
+  if (!isValidProjectName(projectName)) {
       return { base: getProjectNumber(), nextCount: 1, projectExists: false, lastRecordNumber: null };
     }
 
@@ -179,9 +178,6 @@ function getProjectRecordInfo(projectName) {
       projectExists: true, 
       lastRecordNumber 
     };
-  } catch (error) {
-    return { base: getProjectNumber(), nextCount: 1, projectExists: false, lastRecordNumber: null };
-  }
 }
 
 function getNextRecordNumber(projectName) {
@@ -268,8 +264,7 @@ function getNextRecordNumber(projectName) {
 }
 
 function getProjectList() {
-  try {
-    // Check if spreadsheet is accessible
+  // Check if spreadsheet is accessible
     if (!ss) {
         return [];
     }
@@ -302,9 +297,6 @@ function getProjectList() {
     
     
     return sortedProjects;
-  } catch (error) {
-    return [];
-  }
 }
 
 function validatePayload(payload) {
