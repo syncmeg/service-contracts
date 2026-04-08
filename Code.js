@@ -215,7 +215,7 @@ function getNextRecordNumber(projectName) {
           isCurrentYearRecord(recordNum) && 
           validateRecordNumber(recordNum)) {
         
-        const match = recordNum.match(YEAR_AGNOSTIC_PATTERN);
+        const match = YEAR_AGNOSTIC_PATTERN.exec(recordNum);
         if (match) {
           const baseNum = Number.parseInt(match[2]);
           const count = match[3] ? Number.parseInt(match[3]) : 1;
