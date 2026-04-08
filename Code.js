@@ -697,8 +697,6 @@ function aggregateStats(data, fromDate, toDate, sevenDaysAgo) {
 
 function getDashboardStats(dateFrom, dateTo) {
   try {
-    const startTime = Date.now();
-    
     const sheet = getDataSheet();
     const data = getSheetData(sheet);
     
