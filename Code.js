@@ -331,7 +331,7 @@ function validateRequiredField(key, value, rules) {
 
 function sanitizeNumberValue(value, key, rules) {
   const parsedValue = Number.parseFloat(value);
-  if (isNaN(parsedValue)) throw new Error(`Field ${key} must be a number.`);
+  if (Number.isNaN(parsedValue)) throw new Error(`Field ${key} must be a number.`);
   if (rules.min !== undefined && parsedValue < rules.min) {
     throw new Error(`${key} below minimum.`);
   }
@@ -442,7 +442,7 @@ function updateRecord(rowIndex, updatedRow) {
       // Handle Column 0: Date conversion
       if (index === 0 && cell) {
         const dateObj = new Date(cell);
-        return isNaN(dateObj.getTime()) ? cell : dateObj; 
+        return Number.isNaN(dateObj.getTime()) ? cell : dateObj; 
       }
 
       // Columns 11, 12, 14, 15: Explicitly kept as strings
@@ -512,7 +512,7 @@ function updateRecordById(recordId, updatedRow) {
     const safeSalary = (val) => {
       if (val === undefined || val === null || val === '') return currentRow[7];
       const parsed = Number.parseFloat(val);
-      return isNaN(parsed) ? currentRow[7] : parsed;
+      return Number.isNaN(parsed) ? currentRow[7] : parsed;
     };
 
     // 4. Mapped Row with Nullish Coalescing
@@ -574,7 +574,7 @@ function submitBulkData(rows) {
       
       // Convert first column to Date, fallback to current date if invalid
       const dateVal = new Date(processedRow[0]);
-      processedRow[0] = isNaN(dateVal.getTime()) ? new Date() : dateVal;
+      processedRow[0] = Number.isNaN(dateVal.getTime()) ? new Date() : dateVal;
       
       // Optional: Trim strings to prevent trailing space issues
       return processedRow.map(cell => typeof cell === 'string' ? cell.trim() : cell);
