@@ -84,14 +84,14 @@ function sortRecordNumbers(recordNumbers) {
     const matchB = b.match(YEAR_AGNOSTIC_PATTERN);
     
     if (matchA && matchB) {
-      const baseA = parseInt(matchA[2]);
-      const baseB = parseInt(matchB[2]);
+      const baseA = Number.parseInt(matchA[2]);
+      const baseB = Number.parseInt(matchB[2]);
       
       if (baseA !== baseB) {
         return baseB - baseA;
       } else {
-        const countA = matchA[3] ? parseInt(matchA[3]) : 1;
-        const countB = matchB[3] ? parseInt(matchB[3]) : 1;
+        const countA = matchA[3] ? Number.parseInt(matchA[3]) : 1;
+        const countB = matchB[3] ? Number.parseInt(matchB[3]) : 1;
         return countB - countA;
       }
     }
@@ -106,8 +106,8 @@ function extractBaseAndNextCount(lastRecordNumber) {
   if (lastRecordNumber) {
     const match = lastRecordNumber.match(YEAR_AGNOSTIC_PATTERN);
     if (match) {
-      base = parseInt(match[2]);
-      nextCount = match[3] ? parseInt(match[3]) + 1 : 2;
+      base = Number.parseInt(match[2]);
+      nextCount = match[3] ? Number.parseInt(match[3]) + 1 : 2;
     }
   }
   
@@ -222,8 +222,8 @@ function getNextRecordNumber(projectName) {
         
         const match = recordNum.match(YEAR_AGNOSTIC_PATTERN);
         if (match) {
-          const baseNum = parseInt(match[2]);
-          const count = match[3] ? parseInt(match[3]) : 1;
+          const baseNum = Number.parseInt(match[2]);
+          const count = match[3] ? Number.parseInt(match[3]) : 1;
           
           // Track highest base number
           if (baseNum > maxCount) {
