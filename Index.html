@@ -1282,8 +1282,7 @@
           `Showing records from ${fromDate} to ${toDate}`;
         google.script.run
           .withSuccessHandler(function(result) {
-            if (result.success) {
-            } else {
+            if (!result.success) {
               console.error("❌ Failed to update Report sheet:", result.error);
             }
           })
@@ -1338,8 +1337,7 @@
           toggleIcon.classList.remove('fa-chevron-down');
           toggleIcon.classList.add('fa-chevron-up');
           if (document.getElementById('tableProjectFilter').options.length === 0) {
-            if (preloadedFormData.tableFilters) {
-            } else {
+            if (!preloadedFormData.tableFilters) {
               initializeTableFilters();
             }
           }
@@ -1440,8 +1438,6 @@
           document.getElementById('tableFilterResults').textContent = filteredResults.length;
           StateManager.updateState('records.currentPage', 1);
           renderTable();
-          
-        } else {
         }
       }
       
@@ -1576,7 +1572,6 @@
           StateManager.updateState('records.filtered', [...allRecordsForReset]);
           StateManager.updateState('records.currentPage', 1);
           renderTable();
-        } else {
         }
         
       }
@@ -1704,7 +1699,6 @@
               fromDate = new Date(dateFrom);
               toDate = new Date(dateTo);
               toDate.setHours(23, 59, 59, 999);
-            } else {
             }
             
             data.forEach((row, index) => {
@@ -3801,17 +3795,21 @@ function renderTable() {
           }, 0) / apiCalls.length;
           
           if (avgApiTime > 2000) {
+            console.warn('⚠️ High API response time detected:', avgApiTime.toFixed(2) + 'ms');
           }
           
           const filterOps = metrics['filterTable'];
           if (filterOps && filterOps.some(t => t > 500)) {
+            console.warn('⚠️ Slow filter operations detected');
           }
           
           const failedOps = Object.keys(metrics).filter(key => key.includes('_failed'));
           if (failedOps.length > 0) {
+            console.warn('⚠️ Failed operations detected:', failedOps);
           }
           
           if (avgApiTime < 500 && failedOps.length === 0) {
+            console.log('✅ Performance is optimal');
           }
         }
         
