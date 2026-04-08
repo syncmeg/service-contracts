@@ -26,7 +26,16 @@
     ></script>
     <style>
         .hidden { display: none; }
-        .modal-overlay { background: rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); }
+        .modal-overlay { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 5;
+        }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
@@ -409,6 +418,7 @@
     </div>
 
     <dialog id="formModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" aria-modal="true" aria-labelledby="formModalTitle" style="background: transparent;">
+        <div class="modal-overlay" onclick="closeModal('formModal')" aria-label="Close modal"></div>
         <div class="glass-effect rounded-3xl shadow-2xl z-10 w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col card-hover relative">
             <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-blue-50 to-slate-100">
               <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
@@ -540,6 +550,7 @@
     </dialog>
 
     <dialog id="tableModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" aria-modal="true" aria-labelledby="tableModalTitle" style="background: transparent;">
+        <div class="modal-overlay" onclick="closeModal('tableModal')" aria-label="Close modal"></div>
         <div class="glass-effect rounded-2xl shadow-2xl z-10 w-full max-w-7xl h-[85vh] flex flex-col card-hover overflow-hidden relative">
             <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-slate-100">
               <div class="flex justify-between items-center mb-4">
