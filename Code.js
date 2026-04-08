@@ -204,7 +204,6 @@ function getNextRecordNumber(projectName) {
     
     let maxCount = 0;
     const highestBaseCounts = new Map(); // Store counts for each base number
-    const currentYear = getCurrentYear();
     
     data.slice(1).forEach(row => {
       // Skip if row doesn't have enough columns or project doesn't match
@@ -710,8 +709,6 @@ function getDashboardStats(dateFrom, dateTo) {
     const { fromDate, toDate } = createDateRange(dateFrom, dateTo);
     const sevenDaysAgo = getSevenDaysAgo();
     const stats = aggregateStats(data, fromDate, toDate, sevenDaysAgo);
-    
-    const duration = Date.now() - startTime;
     
     return stats;
   } catch (error) {
